@@ -1,0 +1,10 @@
+api_platform:
+    title: 'Remind Me REST API'
+    description: 'API to manage the Remind-me app'
+    
+    mapping:
+        paths: ['%kernel.project_dir%/src/Entity']
+    patch_formats:
+        json: ['application/merge-patch+json']
+    swagger:
+        versions: [3]
