@@ -37,6 +37,11 @@ class Music
      */
     private $type;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $artist;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -66,7 +71,7 @@ class Music
         return $this;
     }
 
-    public function getReleasedAt():string
+    public function getReleasedAt(): string
     {
         return $this->releasedAt;
     }
@@ -78,7 +83,7 @@ class Music
         return $this;
     }
 
-    public function getType(): ?int
+    public function getType(): ?string
     {
         switch ($this->type) {
             case '0':
@@ -86,12 +91,26 @@ class Music
                 break;
 
             case '1':
-                $type = 'Chanson';
+                $type = 'Song';
+                break;
+
+            case '2':
+                $type = 'Artist';
+                break;
+
+            default:
+                $type = null;
                 break;
         }
         return $type;
     }
 
+    /**
+     * Only 2 values possible : 'Album', 'Song'
+     *
+     * @param string $type
+     * @return self
+     */
     public function setType(string $type): self
     {
         switch ($type) {
@@ -99,10 +118,26 @@ class Music
                 $this->type = '0';
                 break;
 
-            case 'Chanson':
+            case 'Song':
                 $this->type = '1';
                 break;
+
+            case 'Artist':
+                $this->type = '2';
+                break;
         }
+        return $this;
+    }
+
+    public function getArtist(): ?string
+    {
+        return $this->artist;
+    }
+
+    public function setArtist(?string $artist): self
+    {
+        $this->artist = $artist;
+
         return $this;
     }
 }
