@@ -2,10 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\UserBookListRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserBookListRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *  normalizationContext={
+ *      "groups" = {"user_book_list"}
+ *   }
+ *  )
  * @ORM\Entity(repositoryClass=UserBookListRepository::class)
  */
 class UserBookList
@@ -19,18 +26,21 @@ class UserBookList
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user_book_list","user_list_show"})
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userBookLists")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user_book_list"})
      */
     private $list;
 
     /**
      * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="userBookLists")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user_book_list","user_list_show"})
      */
     private $book;
 

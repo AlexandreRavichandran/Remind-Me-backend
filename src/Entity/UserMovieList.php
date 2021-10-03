@@ -2,10 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\UserMovieListRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserMovieListRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ * normalizationContext={
+ *      "groups" = {"user_movie_list"}
+ *   })
  * @ORM\Entity(repositoryClass=UserMovieListRepository::class)
  */
 class UserMovieList
@@ -19,18 +25,21 @@ class UserMovieList
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user_movie_list","user_list_show"})
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userMovieLists")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user_movie_list"})
      */
     private $list;
 
     /**
      * @ORM\ManyToOne(targetEntity=Movie::class, inversedBy="userMovieLists")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user_movie_list","user_list_show"})
      */
     private $movie;
 

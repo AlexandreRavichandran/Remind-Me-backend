@@ -8,3 +8,10 @@ api_platform:
         json: ['application/merge-patch+json']
     swagger:
         versions: [3]
+    collection:
+        exists_parameter_name: 'exists'
+        order: 'ASC'
+        order_parameter_name: 'order'
+        pagination: 
+            enabled: false
+            items_per_page: 5

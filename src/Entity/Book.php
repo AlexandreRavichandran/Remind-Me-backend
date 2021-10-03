@@ -2,13 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\BookRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\BookRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=BookRepository::class)
+ *  normalizationContext={
+ *      "groups" = {"book_list"}
+ *   }
  */
 class Book
 {
@@ -21,21 +27,25 @@ class Book
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"book_list","user_list_show"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"book_list","user_list_show"})
      */
     private $author;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"book_list"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="string")
+     * @Groups({"book_list","user_list_show"})
      */
     private $releasedAt;
 

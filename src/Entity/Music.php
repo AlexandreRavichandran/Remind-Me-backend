@@ -6,9 +6,15 @@ use App\Entity\UserMusicList;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MusicRepository;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ * normalizationContext={
+ *      "groups" = {"music_list"}
+ *   })
  * @ORM\Entity(repositoryClass=MusicRepository::class)
  */
 class Music
@@ -22,26 +28,31 @@ class Music
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"music_list","user_list_show"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"music_list","user_list_show"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="string")
+     * @Groups({"music_list"})
      */
     private $releasedAt;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups({"music_list","user_list_show"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"music_list","user_list_show"})
      */
     private $artist;
 

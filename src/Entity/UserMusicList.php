@@ -2,12 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\UserMusicListRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserMusicListRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ * normalizationContext={
+ *      "groups" = {"user_music_list"}
+ *   })
  * @ORM\Entity(repositoryClass=UserMusicListRepository::class)
  */
 class UserMusicList
@@ -21,18 +27,21 @@ class UserMusicList
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"user_music_list","user_list_show"})
      */
     private $listOrder;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userListMusic")
+     * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userMusicList")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user_music_list"})
      */
     private $list;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Music::class, inversedBy="userListMusic")
+     * @ORM\ManyToOne(targetEntity=Music::class, inversedBy="userMusicList")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"user_music_list","user_list_show"})
      */
     private $music;
 
@@ -81,5 +90,4 @@ class UserMusicList
 
         return $this;
     }
-
 }

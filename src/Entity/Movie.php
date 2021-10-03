@@ -2,14 +2,25 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MovieRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *  attributes={
+ *     "order":{"name": "ASC"}
+ *  },
+ *  normalizationContext={
+ *      "groups" = {"movie_list"}
+ *   }
+ * )
+ * @ApiFilter(SearchFilter::class,properties={"name":"partial","category":"partial"})
  * @ORM\Entity(repositoryClass=MovieRepository::class)
  */
 class Movie
@@ -23,21 +34,25 @@ class Movie
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"movie_list","user_list_show"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"movie_list"})
      */
     private $realisator;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"movie_list"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="string")
+     * @Groups({"movie_list","user_list_show"})
      */
     private $releasedAt;
 
