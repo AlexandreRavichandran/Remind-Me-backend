@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\MusicRepository;
+use App\Entity\UserMusicList;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MusicRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=MusicRepository::class)
@@ -41,6 +44,16 @@ class Music
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $artist;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserMusicList::class, mappedBy="music")
+     */
+    private $userMusicList;
+
+    public function __construct()
+    {
+        $this->userMusicList = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -137,6 +150,36 @@ class Music
     public function setArtist(?string $artist): self
     {
         $this->artist = $artist;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserMusicList[]
+     */
+    public function getUserMusicList(): Collection
+    {
+        return $this->userMusicList;
+    }
+
+    public function addUserMusicList(UserMusicList $userMusicList): self
+    {
+        if (!$this->userMusicList->contains($userMusicList)) {
+            $this->userMusicList[] = $userMusicList;
+            $userMusicList->setMusic($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserMusicList(UserMusicList $userMusicList): self
+    {
+        if ($this->userMusicList->removeElement($userMusicList)) {
+            // set the owning side to null (unless already changed)
+            if ($userMusicList->getMusic() === $this) {
+                $userMusicList->setMusic(null);
+            }
+        }
 
         return $this;
     }

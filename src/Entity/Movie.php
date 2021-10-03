@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MovieRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -38,6 +40,16 @@ class Movie
      * @ORM\Column(type="string")
      */
     private $releasedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserMovieList::class, mappedBy="movie")
+     */
+    private $userMovieLists;
+
+    public function __construct()
+    {
+        $this->userMovieLists = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -88,6 +100,36 @@ class Movie
     public function setReleasedAt(string $releasedAt): self
     {
         $this->releasedAt = $releasedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserMovieList[]
+     */
+    public function getUserMovieLists(): Collection
+    {
+        return $this->userMovieLists;
+    }
+
+    public function addUserMovieList(UserMovieList $userMovieList): self
+    {
+        if (!$this->userMovieLists->contains($userMovieList)) {
+            $this->userMovieLists[] = $userMovieList;
+            $userMovieList->setMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserMovieList(UserMovieList $userMovieList): self
+    {
+        if ($this->userMovieLists->removeElement($userMovieList)) {
+            // set the owning side to null (unless already changed)
+            if ($userMovieList->getMovie() === $this) {
+                $userMovieList->setMovie(null);
+            }
+        }
 
         return $this;
     }

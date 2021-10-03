@@ -8,6 +8,9 @@ use App\Entity\User;
 use App\Entity\Movie;
 use App\Entity\Music;
 use App\Entity\Listing;
+use App\Entity\UserBookList;
+use App\Entity\UserMovieList;
+use App\Entity\UserMusicList;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -30,6 +33,11 @@ class AppFixtures extends Fixture
         $musicCategories = ['rap', 'rnb', 'classical', 'rock\'n\'roll', 'metal', 'various'];
         $musicTypes = ['Album', 'Song', 'Artist'];
 
+        $movies = [];
+        $musics = [];
+        $books = [];
+
+        //Creating movies
         for ($i = 0; $i < 10; $i++) {
 
             $movie = new Movie();
@@ -39,9 +47,11 @@ class AppFixtures extends Fixture
                 ->setCategory($faker->randomElement($movieCategories))
                 ->setReleasedAt($faker->date('d m Y'));
 
+            $movies[] = $movie;
             $manager->persist($movie);
         }
 
+        //Creating musics
         for ($i = 0; $i < 10; $i++) {
 
             $music = new Music();
@@ -54,9 +64,11 @@ class AppFixtures extends Fixture
                 $music->setArtist($faker->firstName . ' ' . $faker->lastName);
             }
 
+            $musics[] = $music;
             $manager->persist($music);
         }
 
+        //Creating books
         for ($i = 0; $i < 10; $i++) {
 
             $book = new Book();
@@ -66,20 +78,61 @@ class AppFixtures extends Fixture
                 ->setCategory($faker->randomElement($bookCategories))
                 ->setReleasedAt($faker->date('d m Y'));
 
+            $books[] = $book;
             $manager->persist($book);
         }
 
+        //Creating users
         for ($i = 0; $i < 5; $i++) {
 
             $user = new User();
             $user
                 ->setPseudonym($faker->firstName . '.' . $faker->lastName)
                 ->setEmail($faker->email)
-                ->setPassword($this->passwordEncoder->hashPassword($user, 'demo'))
-                ->setList(new Listing);
+                ->setPassword($this->passwordEncoder->hashPassword($user, 'demo'));
 
+            //Creating listings
+            $listing = new Listing();
+
+            //Creating UserMovieLists
+            for ($j = 1; $j < mt_rand(2, 6); $j++) {
+
+                $userMovieList = new UserMovieList();
+                $userMovieList
+                    ->setMovie($faker->randomElement($movies))
+                    ->setListOrder($j);
+                $manager->persist($userMovieList);
+                $listing->addUserMovieList($userMovieList);
+            }
+
+            //Creating UserMusicLists
+            for ($j = 1; $j < mt_rand(2, 6); $j++) {
+
+                $userMusicList = new UserMusicList();
+                $userMusicList
+                    ->setMusic($faker->randomElement($musics))
+                    ->setListOrder($j);
+                $manager->persist($userMusicList);
+                $listing->addUserMusicList($userMusicList);
+            }
+
+            //Creating UserBookLists
+            for ($j = 1; $j < mt_rand(2, 6); $j++) {
+
+                $userBookList = new UserBookList();
+                $userBookList
+                    ->setBook($faker->randomElement($books))
+                    ->setListOrder($j);
+                $manager->persist($userBookList);
+                $listing->addUserBookList($userBookList);
+            }
+            $manager->persist($listing);
+            $user->setList($listing);
             $manager->persist($user);
         }
+
+
+
 
         $manager->flush();
     }

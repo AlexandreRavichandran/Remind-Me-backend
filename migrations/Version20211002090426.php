@@ -14,7 +14,7 @@ final class Version20211002090426 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add artist field to music table';
     }
 
     public function up(Schema $schema): void

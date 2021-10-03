@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,16 @@ class Book
      * @ORM\Column(type="string")
      */
     private $releasedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserBookList::class, mappedBy="book")
+     */
+    private $userBookLists;
+
+    public function __construct()
+    {
+        $this->userBookLists = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +98,36 @@ class Book
     public function setReleasedAt(string $releasedAt): self
     {
         $this->releasedAt = $releasedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserBookList[]
+     */
+    public function getUserBookLists(): Collection
+    {
+        return $this->userBookLists;
+    }
+
+    public function addUserBookList(UserBookList $userBookList): self
+    {
+        if (!$this->userBookLists->contains($userBookList)) {
+            $this->userBookLists[] = $userBookList;
+            $userBookList->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserBookList(UserBookList $userBookList): self
+    {
+        if ($this->userBookLists->removeElement($userBookList)) {
+            // set the owning side to null (unless already changed)
+            if ($userBookList->getBook() === $this) {
+                $userBookList->setBook(null);
+            }
+        }
 
         return $this;
     }
