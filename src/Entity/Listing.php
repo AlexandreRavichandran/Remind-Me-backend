@@ -5,17 +5,10 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ListingRepository;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *  collectionOperations={"GET"},
- *  itemOperations={"GET"}
- * 
- * ),
  * @ORM\Entity(repositoryClass=ListingRepository::class)
  */
 class Listing
@@ -29,6 +22,7 @@ class Listing
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="list", cascade={"persist", "remove"})
+     * @Groups({"list_movie_add","list_book_add","list_musics_add"})
      */
     private $user;
 
@@ -40,7 +34,7 @@ class Listing
 
     /**
      * @ORM\OneToMany(targetEntity=UserMusicList::class, mappedBy="list")
-     * @Groups({"user_browse","user_read"})
+     * @Groups({"user_browse","user_read","list_musics_add"})
      */
     private $userMusicLists;
 

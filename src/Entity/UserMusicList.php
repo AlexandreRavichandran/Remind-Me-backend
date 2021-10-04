@@ -18,17 +18,29 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *              "groups": {"list_music_browse"}
  *          }         
  *       },
- *      "POST": {"path": "/list/musics"}
+ *       "POST": {
+ *         "path": "/list/musics",
+ *          "denormalization_context": {
+ *              "groups": {"list_musics_add"}
+ *          }         
+ *       },
  *     },
  *  itemOperations={
  *      "GET": {
  *          "path":"/list/musics/{id}",
+ *          "requirements": {"id": "\d+"},
  *          "normalization_context":{
  *              "groups": {"list_music_read"}
  *          }
  *       },
- *      "PUT": {"path":"/list/musics/{id}"},
- *      "DELETE": {"path":"/list/musics/{id}"}
+ *      "PUT": {
+ *          "path":"/list/musics/{id}",
+ *          "requirements": {"id": "\d+"},
+ *          },
+ *      "DELETE": {
+ *          "path":"/list/musics/{id}",
+ *          "requirements": {"id": "\d+"},
+ *         }
  *     },
  *  )
  * @ORM\Entity(repositoryClass=UserMusicListRepository::class)
@@ -51,7 +63,7 @@ class UserMusicList
     /**
      * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userMusicList")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_music_browse","list_music_read"})
+     * @Groups({"list_music_browse","list_music_read","list_musics_add"})
      */
     private $list;
 

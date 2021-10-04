@@ -22,6 +22,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  *  itemOperations={
  *      "GET": {
  *          "path":"/users/{id}",
+ *          "requirements": {"id": "\d+"},
  *          "normalization_context":{
  *              "groups": {"user_read"}
  *          }
@@ -36,13 +37,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user_browse","user_read"})
+     * @Groups({"user_browse","user_read","list_movie_add","list_book_add"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user_browse","user_read"})
+     * @Groups({"user_browse","user_read","list_book_add","list_movie_add"})"
      */
     private $email;
 

@@ -11,22 +11,34 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *  collectionOperations={
  *      "GET": {
- *         "path":"/list/books",
+ *         "path": "/list/books",
  *          "normalization_context": {
  *              "groups": {"list_book_browse"}
  *          }         
  *       },
- *      "POST": {"path": "/list/books"}
- *     },
+ *       "POST": {
+ *         "path": "/list/books",
+ *          "denormalization_context": {
+ *              "groups": {"list_book_add"}
+ *          }         
+ *       },
+ *   },
  *  itemOperations={
  *      "GET": {
  *          "path":"/list/books/{id}",
+ *          "requirements": {"id": "\d+"},
  *          "normalization_context":{
  *              "groups": {"list_book_read"}
- *          }
+ *          },
  *       },
- *      "PUT": {"path":"/list/books/{id}"},
- *      "DELETE": {"path":"/list/books/{id}"}
+ *      "PUT": {
+ *          "path":"/list/books/{id}",
+ *          "requirements": {"id": "\d+"},
+ *          },
+ *      "DELETE": {
+ *          "path":"/list/books/{id}",
+ *          "requirements": {"id": "\d+"},  
+ *          }
  *     },
  *  )
  * @ORM\Entity(repositoryClass=UserBookListRepository::class)
@@ -49,14 +61,14 @@ class UserBookList
     /**
      * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userBookLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_book_browse","list_book_read"})
+     * @Groups({"list_book_browse","list_book_read" ,"list_book_add"})
      */
     private $list;
 
     /**
      * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="userBookLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read"})
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add"})
      */
     private $book;
 

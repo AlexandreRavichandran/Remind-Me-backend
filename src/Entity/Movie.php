@@ -4,28 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MovieRepository;
-use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
- * @ApiResource(
- *  collectionOperations={"GET"},
- *  itemOperations={"GET"},
- *  attributes={
- *     "order":{"name": "ASC"}
- *  }
- * ),
- * @ApiFilter(SearchFilter::class, properties= {
- * "name": "partial",
- * "realisator": "partial",
- * "category": "partial",
- * "releasedAt": "exact"
- * })
- * @ApiFilter(SearchFilter::class,properties={"name":"partial","category":"partial"})
+
  * @ORM\Entity(repositoryClass=MovieRepository::class)
  */
 class Movie
@@ -39,25 +23,25 @@ class Movie
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read"})
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_movie_read"})
+     * @Groups({"list_movie_read","list_movie_add"})
      */
     private $realisator;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read"})
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"list_movie_read"})
+     * @Groups({"list_movie_read","list_movie_add"})
      */
     private $releasedAt;
 

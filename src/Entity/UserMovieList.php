@@ -16,17 +16,29 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *              "groups": {"list_movie_browse"}
  *          }         
  *       },
- *      "POST": {"path": "/list/movies"}
+ *       "POST": {
+ *         "path":"/list/movies",
+ *          "denormalization_context": {
+ *              "groups": {"list_movie_add"}
+ *          }         
+ *       },
  *     },
  *  itemOperations={
  *      "GET": {
  *          "path":"/list/movies/{id}",
+ *          "requirements": {"id": "\d+"},
  *          "normalization_context":{
  *              "groups": {"list_movie_read"}
  *          }
  *       },
- *      "PUT": {"path":"/list/movies/{id}"},
- *      "DELETE": {"path":"/list/movies/{id}"}
+ *      "PUT": {
+ *          "path":"/list/movies/{id}",
+ *          "requirements": {"id": "\d+"},
+ *       },
+ *      "DELETE": {
+ *          "path":"/list/movies/{id}",
+ *          "requirements": {"id": "\d+"},   
+ *       }
  *     },
  *  )
  * @ORM\Entity(repositoryClass=UserMovieListRepository::class)
@@ -49,14 +61,14 @@ class UserMovieList
     /**
      * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userMovieLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_movie_browse","list_movie_read"})
+     * @Groups({"list_movie_browse","list_movie_read","list_movie_add"})
      */
     private $list;
 
     /**
      * @ORM\ManyToOne(targetEntity=Movie::class, inversedBy="userMovieLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read"})
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add"})
      */
     private $movie;
 
