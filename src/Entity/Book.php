@@ -2,19 +2,28 @@
 
 namespace App\Entity;
 
+use App\Entity\UserBookList;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BookRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *  collectionOperations={"GET"},
+ *  itemOperations={"GET"}
+ * )
+ * @ApiFilter(SearchFilter::class, properties= {
+ *  "name": "partial",
+ *  "category": "partial",
+ *  "author": "partial" 
+ * })
+ * 
  * @ORM\Entity(repositoryClass=BookRepository::class)
- *  normalizationContext={
- *      "groups" = {"book_list"}
- *   }
  */
 class Book
 {
@@ -27,30 +36,31 @@ class Book
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"book_list","user_list_show"})
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"book_list","user_list_show"})
+     * @Groups({"list_book_read"})
      */
     private $author;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"book_list"})
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"book_list","user_list_show"})
+     * @Groups({"list_book_read"})
      */
     private $releasedAt;
 
     /**
      * @ORM\OneToMany(targetEntity=UserBookList::class, mappedBy="book")
+     * @Groups({"book_list"})
      */
     private $userBookLists;
 

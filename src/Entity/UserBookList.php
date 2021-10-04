@@ -9,9 +9,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *  normalizationContext={
- *      "groups" = {"user_book_list"}
- *   }
+ *  collectionOperations={
+ *      "GET": {
+ *         "path":"/list/books",
+ *          "normalization_context": {
+ *              "groups": {"list_book_browse"}
+ *          }         
+ *       },
+ *      "POST": {"path": "/list/books"}
+ *     },
+ *  itemOperations={
+ *      "GET": {
+ *          "path":"/list/books/{id}",
+ *          "normalization_context":{
+ *              "groups": {"list_book_read"}
+ *          }
+ *       },
+ *      "PUT": {"path":"/list/books/{id}"},
+ *      "DELETE": {"path":"/list/books/{id}"}
+ *     },
  *  )
  * @ORM\Entity(repositoryClass=UserBookListRepository::class)
  */
@@ -26,21 +42,21 @@ class UserBookList
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"user_book_list","user_list_show"})
+     * @Groups({"list_book_browse","list_book_read"})
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userBookLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_book_list"})
+     * @Groups({"list_book_browse","list_book_read"})
      */
     private $list;
 
     /**
      * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="userBookLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_book_list","user_list_show"})
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read"})
      */
     private $book;
 

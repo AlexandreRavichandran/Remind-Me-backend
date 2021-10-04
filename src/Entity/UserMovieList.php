@@ -9,9 +9,26 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- * normalizationContext={
- *      "groups" = {"user_movie_list"}
- *   })
+ *  collectionOperations={
+ *      "GET": {
+ *         "path":"/list/movies",
+ *          "normalization_context": {
+ *              "groups": {"list_movie_browse"}
+ *          }         
+ *       },
+ *      "POST": {"path": "/list/movies"}
+ *     },
+ *  itemOperations={
+ *      "GET": {
+ *          "path":"/list/movies/{id}",
+ *          "normalization_context":{
+ *              "groups": {"list_movie_read"}
+ *          }
+ *       },
+ *      "PUT": {"path":"/list/movies/{id}"},
+ *      "DELETE": {"path":"/list/movies/{id}"}
+ *     },
+ *  )
  * @ORM\Entity(repositoryClass=UserMovieListRepository::class)
  */
 class UserMovieList
@@ -25,21 +42,21 @@ class UserMovieList
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"user_movie_list","user_list_show"})
+     * @Groups({"list_movie_browse","list_movie_read"})
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userMovieLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_movie_list"})
+     * @Groups({"list_movie_browse","list_movie_read"})
      */
     private $list;
 
     /**
      * @ORM\ManyToOne(targetEntity=Movie::class, inversedBy="userMovieLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_movie_list","user_list_show"})
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read"})
      */
     private $movie;
 
@@ -47,7 +64,7 @@ class UserMovieList
     {
         return $this->id;
     }
-
+    
     public function getListOrder(): ?int
     {
         return $this->listOrder;

@@ -6,15 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ListingRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- *  normalizationContext={
- *      "groups" = {"user_list_show"}
- *   }
- * )
+ *  collectionOperations={"GET"},
+ *  itemOperations={"GET"}
+ * 
+ * ),
  * @ORM\Entity(repositoryClass=ListingRepository::class)
  */
 class Listing
@@ -28,25 +29,24 @@ class Listing
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="list", cascade={"persist", "remove"})
-     * @Groups({"user_list_show"})
      */
     private $user;
 
     /**
      * @ORM\OneToMany(targetEntity=UserMovieList::class, mappedBy="list")
-     * @Groups({"user_list_show"})
+     * @Groups({"user_browse","user_read"})
      */
     private $userMovieLists;
 
     /**
      * @ORM\OneToMany(targetEntity=UserMusicList::class, mappedBy="list")
-     * @Groups({"user_list_show"})
+     * @Groups({"user_browse","user_read"})
      */
     private $userMusicLists;
 
     /**
      * @ORM\OneToMany(targetEntity=UserBookList::class, mappedBy="list")
-     * @Groups({"user_list_show"})
+     * @Groups({"user_browse","user_read"})
      */
     private $userBookLists;
 

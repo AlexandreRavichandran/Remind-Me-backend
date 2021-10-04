@@ -11,9 +11,26 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
- * normalizationContext={
- *      "groups" = {"user_music_list"}
- *   })
+ *  collectionOperations={
+ *      "GET": {
+ *         "path":"/list/musics",
+ *          "normalization_context": {
+ *              "groups": {"list_music_browse"}
+ *          }         
+ *       },
+ *      "POST": {"path": "/list/musics"}
+ *     },
+ *  itemOperations={
+ *      "GET": {
+ *          "path":"/list/musics/{id}",
+ *          "normalization_context":{
+ *              "groups": {"list_music_read"}
+ *          }
+ *       },
+ *      "PUT": {"path":"/list/musics/{id}"},
+ *      "DELETE": {"path":"/list/musics/{id}"}
+ *     },
+ *  )
  * @ORM\Entity(repositoryClass=UserMusicListRepository::class)
  */
 class UserMusicList
@@ -27,21 +44,21 @@ class UserMusicList
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"user_music_list","user_list_show"})
+     * @Groups({"list_music_browse","list_music_read"})
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userMusicList")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_music_list"})
+     * @Groups({"list_music_browse","list_music_read"})
      */
     private $list;
 
     /**
      * @ORM\ManyToOne(targetEntity=Music::class, inversedBy="userMusicList")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_music_list","user_list_show"})
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read"})
      */
     private $music;
 

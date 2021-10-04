@@ -5,16 +5,26 @@ namespace App\Entity;
 use App\Entity\UserMusicList;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MusicRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- * normalizationContext={
- *      "groups" = {"music_list"}
- *   })
+ *  collectionOperations={"GET"},
+ *  itemOperations={"GET"}
+ * ),
+ *  @ApiFilter(SearchFilter::class, properties= {
+ *  "name": "partial",
+ *  "category": "partial",
+ *  "releasedAt": "exact",
+ *  "type": "exact",
+ *  "artist": "partials"
+ * }),
  * @ORM\Entity(repositoryClass=MusicRepository::class)
  */
 class Music
@@ -23,36 +33,38 @@ class Music
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ApiProperty(identifier=false)
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"music_list","user_list_show"})
+     * @ApiProperty(identifier=true)
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"music_list","user_list_show"})
+     * @Groups({"list_music_read"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"music_list"})
+     * @Groups({"list_music_browse","user_browse","user_read"})
      */
     private $releasedAt;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"music_list","user_list_show"})
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"music_list","user_list_show"})
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read"})
      */
     private $artist;
 

@@ -13,13 +13,18 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
+ *  collectionOperations={"GET"},
+ *  itemOperations={"GET"},
  *  attributes={
  *     "order":{"name": "ASC"}
- *  },
- *  normalizationContext={
- *      "groups" = {"movie_list"}
- *   }
- * )
+ *  }
+ * ),
+ * @ApiFilter(SearchFilter::class, properties= {
+ * "name": "partial",
+ * "realisator": "partial",
+ * "category": "partial",
+ * "releasedAt": "exact"
+ * })
  * @ApiFilter(SearchFilter::class,properties={"name":"partial","category":"partial"})
  * @ORM\Entity(repositoryClass=MovieRepository::class)
  */
@@ -34,25 +39,25 @@ class Movie
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"movie_list","user_list_show"})
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"movie_list"})
+     * @Groups({"list_movie_read"})
      */
     private $realisator;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"movie_list"})
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"movie_list","user_list_show"})
+     * @Groups({"list_movie_read"})
      */
     private $releasedAt;
 
