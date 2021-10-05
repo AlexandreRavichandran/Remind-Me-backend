@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use App\Entity\UserMusicList;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MusicRepository;
@@ -9,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MusicRepository::class)
@@ -27,30 +29,47 @@ class Music
      * @ORM\Column(type="string", length=255)
      * @ApiProperty(identifier=true)
      * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
+     * 
+     * @Assert\NotBlank(message="The music's name can't be blank.")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"list_music_read","list_music_add"})
+     * 
+     * @Assert\NotBlank(message="The music must have at least 1 category.")
      */
     private $category;
 
     /**
      * @ORM\Column(type="string")
      * @Groups({"list_music_browse","user_browse","user_read","list_music_add"})
+     * 
+     * @Assert\NotBlank(message="The music must have a released date.")
+     * @Assert\Regex(
+     *          pattern="\d{2}\/\d{2}\/\d{4}",
+     *          match="false",
+     *          message="The release date must be like DD/MM/YYYY"
+     *          )
      */
     private $releasedAt;
 
     /**
      * @ORM\Column(type="smallint")
      * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
+     * @Assert\NotBlank(message="The music must be one of these types: Album, Artist or Song.")
+     * @Assert\Choice(
+     *          choices={"Album","Artist","Song"},
+     *          message="The music must be one of these types: Album, Artist or Song."
+     * )
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
+     * @Assert\NotBlank(message="The music must have an artist.")
      */
     private $artist;
 

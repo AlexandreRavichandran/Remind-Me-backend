@@ -62,18 +62,17 @@ class UserBookList
     private $listOrder;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userBookLists")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_book_browse","list_book_read"})
-     */
-    private $list;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="userBookLists")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add"})
      */
     private $book;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookList")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -92,18 +91,6 @@ class UserBookList
         return $this;
     }
 
-    public function getList(): ?Listing
-    {
-        return $this->list;
-    }
-
-    public function setList(?Listing $list): self
-    {
-        $this->list = $list;
-
-        return $this;
-    }
-
     public function getBook(): ?Book
     {
         return $this->book;
@@ -112,6 +99,18 @@ class UserBookList
     public function setBook(?Book $book): self
     {
         $this->book = $book;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

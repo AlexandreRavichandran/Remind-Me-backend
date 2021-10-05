@@ -91,9 +91,6 @@ class AppFixtures extends Fixture
                 ->setEmail($faker->email)
                 ->setPassword($this->passwordEncoder->hashPassword($user, 'demo'));
 
-            //Creating listings
-            $listing = new Listing();
-
             //Creating UserMovieLists
             for ($j = 1; $j < mt_rand(2, 6); $j++) {
 
@@ -102,7 +99,7 @@ class AppFixtures extends Fixture
                     ->setMovie($faker->randomElement($movies))
                     ->setListOrder($j);
                 $manager->persist($userMovieList);
-                $listing->addUserMovieList($userMovieList);
+                $user->addMovieList($userMovieList);
             }
 
             //Creating UserMusicLists
@@ -113,7 +110,7 @@ class AppFixtures extends Fixture
                     ->setMusic($faker->randomElement($musics))
                     ->setListOrder($j);
                 $manager->persist($userMusicList);
-                $listing->addUserMusicList($userMusicList);
+                $user->addMusicList($userMusicList);
             }
 
             //Creating UserBookLists
@@ -124,10 +121,8 @@ class AppFixtures extends Fixture
                     ->setBook($faker->randomElement($books))
                     ->setListOrder($j);
                 $manager->persist($userBookList);
-                $listing->addUserBookList($userBookList);
+                $user->addBookList($userBookList);
             }
-            $manager->persist($listing);
-            $user->setList($listing);
             $manager->persist($user);
         }
 

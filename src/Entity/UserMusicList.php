@@ -64,18 +64,18 @@ class UserMusicList
     private $listOrder;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userMusicLists")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_music_read"})
-     */
-    private $list;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Music::class, inversedBy="userMusicLists")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
      */
     private $music;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="musicList")
+     * @ORM\JoinColumn(nullable=false)
+     * 
+     */
+    private $user;
 
     public function __construct()
     {
@@ -99,18 +99,6 @@ class UserMusicList
         return $this;
     }
 
-    public function getList(): ?Listing
-    {
-        return $this->list;
-    }
-
-    public function setList(?Listing $list): self
-    {
-        $this->list = $list;
-
-        return $this;
-    }
-
     public function getMusic(): ?Music
     {
         return $this->music;
@@ -119,6 +107,18 @@ class UserMusicList
     public function setMusic(?Music $music): self
     {
         $this->music = $music;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

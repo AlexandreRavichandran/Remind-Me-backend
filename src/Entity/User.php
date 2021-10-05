@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -17,6 +19,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  *          "normalization_context": {
  *              "groups": {"user_browse"}
  *          }
+ *       },
+ *      "POST": {
+ *         "path":"/users"
  *       },
  *     },
  *  itemOperations={
@@ -66,11 +71,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $pseudonym;
 
     /**
-     * @ORM\OneToOne(targetEntity=Listing::class, inversedBy="user", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user_browse","user_read"})
+     * @ORM\OneToMany(targetEntity=UserMusicList::class, mappedBy="user", orphanRemoval=true)
      */
-    private $list;
+    private $musicList;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserMovieList::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $movieList;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserBookList::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $bookList;
+
+    public function __construct()
+    {
+        $this->musicList = new ArrayCollection();
+        $this->movieList = new ArrayCollection();
+        $this->bookList = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -180,15 +200,94 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getList(): ?Listing
+    /**
+     * @return Collection|UserMusicList[]
+     */
+    public function getMusicList(): Collection
     {
-        return $this->list;
+        return $this->musicList;
     }
 
-    public function setList(Listing $list): self
+    public function addMusicList(UserMusicList $musicList): self
     {
-        $this->list = $list;
+        if (!$this->musicList->contains($musicList)) {
+            $this->musicList[] = $musicList;
+            $musicList->setUser($this);
+        }
 
         return $this;
     }
+
+    public function removeMusicList(UserMusicList $musicList): self
+    {
+        if ($this->musicList->removeElement($musicList)) {
+            // set the owning side to null (unless already changed)
+            if ($musicList->getUser() === $this) {
+                $musicList->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserMovieList[]
+     */
+    public function getMovieList(): Collection
+    {
+        return $this->movieList;
+    }
+
+    public function addMovieList(UserMovieList $movieList): self
+    {
+        if (!$this->movieList->contains($movieList)) {
+            $this->movieList[] = $movieList;
+            $movieList->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMovieList(UserMovieList $movieList): self
+    {
+        if ($this->movieList->removeElement($movieList)) {
+            // set the owning side to null (unless already changed)
+            if ($movieList->getUser() === $this) {
+                $movieList->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserBookList[]
+     */
+    public function getBookList(): Collection
+    {
+        return $this->bookList;
+    }
+
+    public function addBookList(UserBookList $bookList): self
+    {
+        if (!$this->bookList->contains($bookList)) {
+            $this->bookList[] = $bookList;
+            $bookList->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookList(UserBookList $bookList): self
+    {
+        if ($this->bookList->removeElement($bookList)) {
+            // set the owning side to null (unless already changed)
+            if ($bookList->getUser() === $this) {
+                $bookList->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

@@ -7,6 +7,7 @@ use App\Repository\MovieRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
 
@@ -24,27 +25,39 @@ class Movie
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add"})
+     * 
+     * @Assert\NotBlank(message="The movie's name can't be blank.")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"list_movie_read","list_movie_add"})
+     * 
+     * @Assert\NotBlank(message="The movie's realisator can't be blank.")
      */
     private $realisator;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add"})
+     * 
+     * @Assert\NotBlank(message="The movie must have at least 1 category.")
      */
     private $category;
 
     /**
      * @ORM\Column(type="string")
      * @Groups({"list_movie_read","list_movie_add"})
-     */
-    private $releasedAt;
-
+     * 
+     * @Assert\NotBlank(message="The movie must have a released date.")
+     * @Assert\Regex(
+     *          pattern="\d{2}\/\d{2}\/\d{4}",
+     *          match="false",
+     *          message="The release date must be like DD/MM/YYYY"
+     *          )
+     */   
+     private $releasedAt;
     /**
      * @ORM\OneToMany(targetEntity=UserMovieList::class, mappedBy="movie")
      */

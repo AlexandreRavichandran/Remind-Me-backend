@@ -62,18 +62,18 @@ class UserMovieList
     private $listOrder;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userMovieLists")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_movie_browse","list_movie_read"})
-     */
-    private $list;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Movie::class, inversedBy="userMovieLists")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add"})
      */
     private $movie;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="movieList")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"list_movie_add"})
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -92,18 +92,6 @@ class UserMovieList
         return $this;
     }
 
-    public function getList(): ?Listing
-    {
-        return $this->list;
-    }
-
-    public function setList(?Listing $list): self
-    {
-        $this->list = $list;
-
-        return $this;
-    }
-
     public function getMovie(): ?Movie
     {
         return $this->movie;
@@ -112,6 +100,18 @@ class UserMovieList
     public function setMovie(?Movie $movie): self
     {
         $this->movie = $movie;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
