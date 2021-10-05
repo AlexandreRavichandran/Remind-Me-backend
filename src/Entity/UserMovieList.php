@@ -32,8 +32,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          }
  *       },
  *      "PUT": {
- *          "path":"/list/movies/{id}",
+ *          "path":"/list/movizes/{id}",
  *          "requirements": {"id": "\d+"},
+ *          "denormalization_context": {
+ *              "groups": {"list_movie_update"}
+ *              }
  *       },
  *      "DELETE": {
  *          "path":"/list/movies/{id}",
@@ -54,14 +57,14 @@ class UserMovieList
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"list_movie_browse","list_movie_read"})
+     * @Groups({"list_movie_browse","list_movie_read","list_movie_update"})
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userMovieLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_movie_browse","list_movie_read","list_movie_add"})
+     * @Groups({"list_movie_browse","list_movie_read"})
      */
     private $list;
 
@@ -112,4 +115,5 @@ class UserMovieList
 
         return $this;
     }
+
 }

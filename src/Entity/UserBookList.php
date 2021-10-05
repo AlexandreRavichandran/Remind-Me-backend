@@ -34,6 +34,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      "PUT": {
  *          "path":"/list/books/{id}",
  *          "requirements": {"id": "\d+"},
+ *          "denormalization_context": {
+ *              "groups": {"list_book_update"}
+ *              }
  *          },
  *      "DELETE": {
  *          "path":"/list/books/{id}",
@@ -54,14 +57,14 @@ class UserBookList
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"list_book_browse","list_book_read"})
+     * @Groups({"list_book_browse","list_book_read","list_book_update"})
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userBookLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_book_browse","list_book_read" ,"list_book_add"})
+     * @Groups({"list_book_browse","list_book_read"})
      */
     private $list;
 

@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *       "POST": {
  *         "path": "/list/musics",
  *          "denormalization_context": {
- *              "groups": {"list_musics_add"}
+ *              "groups": {"list_music_add"}
  *          }         
  *       },
  *     },
@@ -36,6 +36,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      "PUT": {
  *          "path":"/list/musics/{id}",
  *          "requirements": {"id": "\d+"},
+ *          "denormalization_context": {
+ *              "groups": {"list_music_update"}
+ *              }
  *          },
  *      "DELETE": {
  *          "path":"/list/musics/{id}",
@@ -56,21 +59,21 @@ class UserMusicList
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"list_music_browse","list_music_read"})
+     * @Groups({"list_music_browse","list_music_read","list_music_update"})
      */
     private $listOrder;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userMusicList")
+     * @ORM\ManyToOne(targetEntity=Listing::class, inversedBy="userMusicLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_music_browse","list_music_read","list_musics_add"})
+     * @Groups({"list_music_read"})
      */
     private $list;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Music::class, inversedBy="userMusicList")
+     * @ORM\ManyToOne(targetEntity=Music::class, inversedBy="userMusicLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_music_browse","list_music_read","user_browse","user_read"})
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
      */
     private $music;
 
@@ -119,4 +122,5 @@ class UserMusicList
 
         return $this;
     }
+
 }

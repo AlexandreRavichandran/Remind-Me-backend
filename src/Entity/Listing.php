@@ -22,7 +22,6 @@ class Listing
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="list", cascade={"persist", "remove"})
-     * @Groups({"list_movie_add","list_book_add","list_musics_add"})
      */
     private $user;
 
@@ -34,7 +33,7 @@ class Listing
 
     /**
      * @ORM\OneToMany(targetEntity=UserMusicList::class, mappedBy="list")
-     * @Groups({"user_browse","user_read","list_musics_add"})
+     * @Groups({"user_browse","user_read",})
      */
     private $userMusicLists;
 

@@ -26,42 +26,42 @@ class Music
     /**
      * @ORM\Column(type="string", length=255)
      * @ApiProperty(identifier=true)
-     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_musics_add"})
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_music_read","list_musics_add"})
+     * @Groups({"list_music_read","list_music_add"})
      */
     private $category;
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"list_music_browse","user_browse","user_read","list_musics_add"})
+     * @Groups({"list_music_browse","user_browse","user_read","list_music_add"})
      */
     private $releasedAt;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_musics_add"})
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_musics_add"})
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
      */
     private $artist;
 
     /**
      * @ORM\OneToMany(targetEntity=UserMusicList::class, mappedBy="music")
      */
-    private $userMusicList;
+    private $userMusicLists;
 
     public function __construct()
     {
-        $this->userMusicList = new ArrayCollection();
+        $this->userMusicLists = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -168,13 +168,13 @@ class Music
      */
     public function getUserMusicList(): Collection
     {
-        return $this->userMusicList;
+        return $this->userMusicLists;
     }
 
     public function addUserMusicList(UserMusicList $userMusicList): self
     {
-        if (!$this->userMusicList->contains($userMusicList)) {
-            $this->userMusicList[] = $userMusicList;
+        if (!$this->userMusicLists->contains($userMusicList)) {
+            $this->userMusicLists[] = $userMusicList;
             $userMusicList->setMusic($this);
         }
 
@@ -183,7 +183,7 @@ class Music
 
     public function removeUserMusicList(UserMusicList $userMusicList): self
     {
-        if ($this->userMusicList->removeElement($userMusicList)) {
+        if ($this->userMusicLists->removeElement($userMusicList)) {
             // set the owning side to null (unless already changed)
             if ($userMusicList->getMusic() === $this) {
                 $userMusicList->setMusic(null);
