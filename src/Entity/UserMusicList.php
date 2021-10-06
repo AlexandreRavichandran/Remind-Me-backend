@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -21,8 +22,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *       "POST": {
  *         "path": "/list/musics",
  *          "denormalization_context": {
- *              "groups": {"list_music_add"}
- *          }         
+ *              "groups": {"list_music_add"},
+ *              "disable_type_enforcement"=true
+ *          },
+ *          "normalization_context": {
+ *              "groups": {"list_music_add_response"}
+ *          }   
  *       },
  *     },
  *  itemOperations={
@@ -59,14 +64,17 @@ class UserMusicList
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"list_music_browse","list_music_read","list_music_update"})
+     * @Groups({"list_music_browse","list_music_read","list_music_update","list_music_add","list_music_add_response"})
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Music::class, inversedBy="userMusicLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response"})
+     * @Assert\NotBlank(message="You must add music datas")
+     * @Assert\NotNull(message="You must add music datas")
+     * @Assert\Valid
      */
     private $music;
 
@@ -122,5 +130,4 @@ class UserMusicList
 
         return $this;
     }
-
 }

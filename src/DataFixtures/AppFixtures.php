@@ -45,7 +45,7 @@ class AppFixtures extends Fixture
                 ->setName($faker->word())
                 ->setRealisator($faker->firstName() . ' ' . $faker->lastName())
                 ->setCategory($faker->randomElement($movieCategories))
-                ->setReleasedAt($faker->date('d m Y'));
+                ->setReleasedAt($faker->date('Y'));
 
             $movies[] = $movie;
             $manager->persist($movie);

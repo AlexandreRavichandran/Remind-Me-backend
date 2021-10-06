@@ -28,7 +28,7 @@ class Music
     /**
      * @ORM\Column(type="string", length=255)
      * @ApiProperty(identifier=true)
-     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response"})
      * 
      * @Assert\NotBlank(message="The music's name can't be blank.")
      */
@@ -36,7 +36,7 @@ class Music
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_music_read","list_music_add"})
+     * @Groups({"list_music_read","list_music_add","list_music_add_response"})
      * 
      * @Assert\NotBlank(message="The music must have at least 1 category.")
      */
@@ -44,20 +44,20 @@ class Music
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"list_music_browse","user_browse","user_read","list_music_add"})
+     * @Groups({"list_music_browse","user_browse","user_read","list_music_add","list_music_add_response"})
      * 
      * @Assert\NotBlank(message="The music must have a released date.")
      * @Assert\Regex(
-     *          pattern="\d{2}\/\d{2}\/\d{4}",
-     *          match="false",
-     *          message="The release date must be like DD/MM/YYYY"
+     *          pattern="/\d{4}/",
+     *          match="true",
+     *          message="The release date must be like YYYY"
      *          )
      */
     private $releasedAt;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response"})
      * @Assert\NotBlank(message="The music must be one of these types: Album, Artist or Song.")
      * @Assert\Choice(
      *          choices={"Album","Artist","Song"},
@@ -68,7 +68,7 @@ class Music
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add"})
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response"})
      * @Assert\NotBlank(message="The music must have an artist.")
      */
     private $artist;
