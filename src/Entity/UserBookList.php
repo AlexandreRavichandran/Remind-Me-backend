@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserBookListRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -65,6 +66,8 @@ class UserBookList
      * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="userBookLists")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add"})
+     * @Assert\NotBlank(message="You must add book datas")
+     * @Assert\Valid
      */
     private $book;
 

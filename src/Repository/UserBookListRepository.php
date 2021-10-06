@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Book;
+use App\Entity\User;
 use App\Entity\UserBookList;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method UserBookList|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +21,14 @@ class UserBookListRepository extends ServiceEntityRepository
         parent::__construct($registry, UserBookList::class);
     }
 
-    // /**
-    //  * @return UserBookList[] Returns an array of UserBookList objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function searchByUser(User $user): array
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $this
+                ->createQueryBuilder('ubl')
+                ->join('ubl.user','u')
+                ->andWhere('u.id = :userId')
+                ->setParameter('userId',$user->getId())
+                ->getQuery()
+                ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?UserBookList
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

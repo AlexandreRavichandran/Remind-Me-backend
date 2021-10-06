@@ -42,7 +42,7 @@ class Book
      * @ORM\Column(type="string", length=255)
      * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add"})
      * 
-     * @Assert\NotBlank(message="The book must have at least 1 category.")
+     * @Assert\NotBlank(message="The book must a category.")
      */
     private $category;
 
@@ -52,9 +52,9 @@ class Book
      * 
      * @Assert\NotBlank(message="The book must have a released date.")
      * @Assert\Regex(
-     *          pattern="\d{2}\/\d{2}\/\d{4}",
+     *          pattern="/\d{4}/",
      *          match="false",
-     *          message="The release date must be like DD/MM/YYYY"
+     *          message="The release date must be like YYYY"
      *          )
      */
     private $releasedAt;
