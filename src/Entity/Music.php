@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Music
 {
+    const TYPES = ['Album', 'Artist', 'Song'];
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -38,7 +39,7 @@ class Music
      * @ORM\Column(type="string", length=255)
      * @Groups({"list_music_read","list_music_add","list_music_add_response"})
      * 
-     * @Assert\NotBlank(message="The music must have at least 1 category.")
+     * @Assert\NotBlank(message="The music must have a category.")
      */
     private $category;
 
@@ -58,11 +59,7 @@ class Music
     /**
      * @ORM\Column(type="smallint")
      * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response"})
-     * @Assert\NotBlank(message="The music must be one of these types: Album, Artist or Song.")
-     * @Assert\Choice(
-     *          choices={"Album","Artist","Song"},
-     *          message="The music must be one of these types: Album, Artist or Song."
-     * )
+     * @Assert\NotBlank(message="You have to set a type of music.")
      */
     private $type;
 

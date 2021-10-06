@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\UserMusicList;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method UserMusicList|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +20,14 @@ class UserMusicListRepository extends ServiceEntityRepository
         parent::__construct($registry, UserMusicList::class);
     }
 
-    // /**
-    //  * @return UserMusicList[] Returns an array of UserMusicList objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function searchByUser(User $user): array
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $this
+                ->createQueryBuilder('uml')
+                ->join('uml.user','u')
+                ->andWhere('u.id = :userId')
+                ->setParameter('userId',$user->getId())
+                ->getQuery()
+                ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?UserMusicList
-    {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

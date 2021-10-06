@@ -64,7 +64,7 @@ class UserMusicList
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"list_music_browse","list_music_read","list_music_update","list_music_add","list_music_add_response"})
+     * @Groups({"list_music_browse","list_music_read","list_music_update","list_music_add_response"})
      */
     private $listOrder;
 
@@ -73,7 +73,6 @@ class UserMusicList
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response"})
      * @Assert\NotBlank(message="You must add music datas")
-     * @Assert\NotNull(message="You must add music datas")
      * @Assert\Valid
      */
     private $music;
