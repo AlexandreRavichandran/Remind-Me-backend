@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserMovieListRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *  collectionOperations={
@@ -65,13 +66,15 @@ class UserMovieList
      * @ORM\ManyToOne(targetEntity=Movie::class, inversedBy="userMovieLists")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add"})
+     * @Assert\NotBlank(message="You must add movie datas")
+     * @Assert\Valid
      */
     private $movie;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="movieList")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_movie_add"})
+     * @Assert\NotBlank(message="User obligatoire")
      */
     private $user;
 

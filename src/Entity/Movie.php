@@ -42,7 +42,7 @@ class Movie
      * @ORM\Column(type="string", length=255)
      * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add"})
      * 
-     * @Assert\NotBlank(message="The movie must have at least 1 category.")
+     * @Assert\NotBlank(message="The movie must have a category.")
      */
     private $category;
 
@@ -52,9 +52,9 @@ class Movie
      * 
      * @Assert\NotBlank(message="The movie must have a released date.")
      * @Assert\Regex(
-     *          pattern="\d{2}\/\d{2}\/\d{4}",
+     *          pattern="/\d{4}/",
      *          match="false",
-     *          message="The release date must be like DD/MM/YYYY"
+     *          message="The release date must be like YYYY"
      *          )
      */   
      private $releasedAt;

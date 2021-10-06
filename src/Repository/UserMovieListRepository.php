@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\UserMovieList;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method UserMovieList|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +20,14 @@ class UserMovieListRepository extends ServiceEntityRepository
         parent::__construct($registry, UserMovieList::class);
     }
 
-    // /**
-    //  * @return UserMovieList[] Returns an array of UserMovieList objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function searchByUser(User $user): array
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return $this
+                ->createQueryBuilder('uml')
+                ->join('uml.user','u')
+                ->andWhere('u.id = :userId')
+                ->setParameter('userId',$user->getId())
+                ->getQuery()
+                ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?UserMovieList
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
