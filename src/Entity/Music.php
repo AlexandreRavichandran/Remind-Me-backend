@@ -31,9 +31,9 @@ class Music
      * @ApiProperty(identifier=true)
      * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response"})
      * 
-     * @Assert\NotBlank(message="The music's name can't be blank.")
+     * @Assert\NotBlank(message="The music's title can't be blank.")
      */
-    private $name;
+    private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -75,6 +75,13 @@ class Music
      */
     private $userMusicLists;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response"})
+     * @Assert\NotBlank(message="The music must have an API Code.")
+     */
+    private $apiCode;
+
     public function __construct()
     {
         $this->userMusicLists = new ArrayCollection();
@@ -85,14 +92,14 @@ class Music
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): self
+    public function setTitle(string $title): self
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
@@ -205,6 +212,18 @@ class Music
                 $userMusicList->setMusic(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getApiCode(): ?int
+    {
+        return $this->apiCode;
+    }
+
+    public function setApiCode(int $apiCode): self
+    {
+        $this->apiCode = $apiCode;
 
         return $this;
     }

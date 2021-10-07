@@ -26,9 +26,9 @@ class Book
      * @ORM\Column(type="string", length=255)
      * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add"})
      * 
-     * @Assert\NotBlank(message="The book's name can't be blank.")
+     * @Assert\NotBlank(message="The book's title can't be blank.")
      */
-    private $name;
+    private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -75,14 +75,14 @@ class Book
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): self
+    public function setTitle(string $title): self
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }

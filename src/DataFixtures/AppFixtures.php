@@ -42,7 +42,7 @@ class AppFixtures extends Fixture
 
             $movie = new Movie();
             $movie
-                ->setName($faker->word())
+                ->setTitle($faker->word())
                 ->setRealisator($faker->firstName() . ' ' . $faker->lastName())
                 ->setCategory($faker->randomElement($movieCategories))
                 ->setReleasedAt($faker->date('Y'));
@@ -56,8 +56,9 @@ class AppFixtures extends Fixture
 
             $music = new Music();
             $music
+                ->setApiCode(mt_rand(10000,99999))
                 ->setType($faker->randomElement($musicTypes))
-                ->setName($faker->word())
+                ->setTitle($faker->word())
                 ->setCategory($faker->randomElement($musicCategories))
                 ->setReleasedAt($faker->date('d m Y'));
             if ($music->getType() === 'Artist') {
@@ -73,7 +74,7 @@ class AppFixtures extends Fixture
 
             $book = new Book();
             $book
-                ->setName($faker->word())
+                ->setTitle($faker->word())
                 ->setAuthor($faker->firstName . ' ' . $faker->lastName)
                 ->setCategory($faker->randomElement($bookCategories))
                 ->setReleasedAt($faker->date('d m Y'));

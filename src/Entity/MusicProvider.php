@@ -18,7 +18,7 @@ class MusicProvider
     /**
      * @ApiProperty(identifier=true)
      */
-    private $apiId;
+    private $apiCode;
     private $title;
     private $type;
     private $artist;
@@ -26,19 +26,19 @@ class MusicProvider
     private $category;
 
     /**
-     * Get the value of apiId
+     * Get the value of apiCode
      */ 
-    public function getApiId()
+    public function getApiCode()
     {
         return $this->apiId;
     }
 
     /**
-     * Set the value of apiId
+     * Set the value of apiCode
      *
      * @return  self
      */ 
-    public function setApiId($apiId)
+    public function setApiCode($apiId)
     {
         $this->apiId = $apiId;
 
