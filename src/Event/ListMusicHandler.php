@@ -42,7 +42,7 @@ class ListMusicHandler implements EventSubscriberInterface
             $music = $datas->getMusic();
             $user = $this->security->getUser();
             
-            //If the book is not already on the database, add it  
+            //If the music is not already on the database, add it  
             $musics = $this->musicRepository->findAll();
             $exists = in_array($music, $musics);
             if (!$exists) {

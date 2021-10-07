@@ -42,7 +42,7 @@ class ListMovieHandler implements EventSubscriberInterface
             $movie = $datas->getMovie();
             $user = $this->security->getUser();
 
-            //If the book is not already on the database, add it  
+            //If the movie is not already on the database, add it  
             $movies = $this->movieRepository->findAll();
             $exists = in_array($movie, $movies);
             if (!$exists) {
@@ -51,7 +51,7 @@ class ListMovieHandler implements EventSubscriberInterface
                 $datas->setMovie($movie);
             }
 
-            //set the list order for the book currently added
+            //set the list order for the movie currently added
             $currentUserMoviesInList = $this->userMovieListRepository->searchByUser($user, $movie);
             $listOrder = count($currentUserMoviesInList) + 1;
             $datas->setListOrder($listOrder);
