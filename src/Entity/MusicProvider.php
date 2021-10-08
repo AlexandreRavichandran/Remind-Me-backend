@@ -9,8 +9,42 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *  collectionOperations= {"GET"},
- *  itemOperations= {"GET"}
+ *      collectionOperations={
+ *        "GET": {
+ *          "path": "/musics",
+ *          "openapi_context": {
+ *              "summary": "Get music datas following research parameters (type and query)",
+ *              "description": "Get music datas following the type of music document and the search query.There is three types of music document: album, artist, and song",
+ *              "parameters": {
+ *                  {
+ *                      "name": "type",
+ *                      "in": "query",
+ *                      "description": "the type of document to search. ONLY 3 values possible: album, artist, and song",
+ *                      "required": true,
+ *                      "type": "string",
+ *                      "items": {"type": "string"}
+ *                  },
+ *                  {
+ *                      "name": "q",
+ *                      "in": "query",
+ *                      "description": "the query to search",
+ *                      "required": true,
+ *                      "type": "string",
+ *                      "items": {"type": "string"}
+ *                  }
+ *              },  
+ *          }
+ *      }
+ *  },
+ *      itemOperations={
+ *        "GET": {
+ *          "path": "/musics/{apiCode}",
+ *          "openapi_context": {
+ *              "summary": "Get a music datas by his api code",
+ *              "description": "Get a music datas by his api code.",
+ *           },  
+ *      }
+ *  }
  * )
  */
 class MusicProvider

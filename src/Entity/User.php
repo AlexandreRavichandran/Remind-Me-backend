@@ -19,6 +19,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  *         "path":"/users",
  *          "normalization_context": {
  *              "groups": {"user_browse","user_add"}
+ *          },
+ *         "openapi_context": {
+ *              "summary": "Get all users and their lists [ONLY ADMIN]",
+ *              "description": "Get all users and their lists. Must be Admin to use this endpoint."
  *          }
  *       },
  *      "POST": {
@@ -28,6 +32,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  *         },
  *         "normalization_context": {
  *              "groups": {"user_add_response"}
+ *          },
+ *         "openapi_context": {
+ *              "summary": "Registrate a user",
+ *              "description": "Registrate a user creating a new user resource"
  *          }
  *       },
  *     },
@@ -37,6 +45,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  *          "requirements": {"id": "\d+"},
  *          "normalization_context":{
  *              "groups": {"user_read"}
+ *          },
+ *         "openapi_context": {
+ *              "summary": "Get connected user datas",
+ *              "description": "Get datas about the currently connected user, and his lists"
  *          }
  *       },
  *    },
@@ -298,5 +310,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 }

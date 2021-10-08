@@ -7,8 +7,34 @@ use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ApiResource(
- *     collectionOperations={"GET"},
- *     itemOperations={"GET"} 
+ *      collectionOperations={
+ *        "GET": {
+ *          "path": "/movies",
+ *          "openapi_context": {
+ *              "summary": "Get movie datas following research parameters",
+ *              "description": "Get movie datas following the search query. A query parameter must be added to this endpoint. This query can be a movie's title, realisator or category",
+ *              "parameters": {
+ *                  {
+ *                      "name": "q",
+ *                      "in": "query",
+ *                      "description": "the query to search",
+ *                      "required": true,
+ *                      "type": "string",
+ *                      "items": {"type": "string"}
+ *                  }
+ *              },  
+ *          }
+ *      }
+ *  },
+ *      itemOperations={
+ *        "GET": {
+ *          "path": "/movies/{apiCode}",
+ *          "openapi_context": {
+ *              "summary": "Get a movie datas by his api code",
+ *              "description": "Get a movie datas by his api code.",
+ *           },           
+ *      }
+ *  }
  * )
  */
 class MovieProvider

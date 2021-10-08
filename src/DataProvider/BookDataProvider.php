@@ -26,12 +26,12 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
     public function getCollection(string $resourceClass, ?string $operationName = null, array $context = [])
     {
         $query = $context['filters']['q'];
-
         $response = $this->executeApiRequest($query);
         $datas = [];
         foreach ($response['items'] as $bookData) {
             $book = new BookProvider();
             $book
+                ->setId($bookData['id'])
                 ->setApiCode($bookData['id'])
                 ->setTitle($bookData['volumeInfo']['title'])
                 ->setReleasedAt($bookData['volumeInfo']['publishedDate'])
@@ -41,7 +41,7 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
         }
         return $datas;
     }
-
+    
     public function getItem(string $resourceClass, $id, ?string $operationName = null, array $context = [])
     {
         $response = $this->executeApiRequest($id, false);

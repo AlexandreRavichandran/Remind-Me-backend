@@ -45,7 +45,7 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
                 $response = $this->handleSongRequest($addQuery, $addEntity);
                 break;
         }
-
+        
         return $response;
     }
 

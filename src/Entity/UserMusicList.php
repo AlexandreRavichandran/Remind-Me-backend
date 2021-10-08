@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "groups": {"list_music_read"}
  *          }
  *       },
- *      "PUT": {
+ *      "PATCH": {
  *          "path":"/list/musics/{id}",
  *          "requirements": {"id": "\d+"},
  *          "denormalization_context": {

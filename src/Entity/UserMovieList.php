@@ -32,8 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "groups": {"list_movie_read"}
  *          }
  *       },
- *      "PUT": {
- *          "path":"/list/movizes/{id}",
+ *      "PATCH": {
+ *          "path":"/list/movies/{id}",
  *          "requirements": {"id": "\d+"},
  *          "denormalization_context": {
  *              "groups": {"list_movie_update"}
