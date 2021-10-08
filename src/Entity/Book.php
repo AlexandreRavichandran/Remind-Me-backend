@@ -65,6 +65,11 @@ class Book
      */
     private $userBookLists;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $apiCode;
+
     public function __construct()
     {
         $this->userBookLists = new ArrayCollection();
@@ -149,6 +154,18 @@ class Book
                 $userBookList->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getApiCode(): ?int
+    {
+        return $this->apiCode;
+    }
+
+    public function setApiCode(int $apiCode): self
+    {
+        $this->apiCode = $apiCode;
 
         return $this;
     }
