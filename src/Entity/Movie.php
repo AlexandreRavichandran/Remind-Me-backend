@@ -26,9 +26,9 @@ class Movie
      * @ORM\Column(type="string", length=255)
      * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add"})
      * 
-     * @Assert\NotBlank(message="The movie's name can't be blank.")
+     * @Assert\NotBlank(message="The movie's title can't be blank.")
      */
-    private $name;
+    private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -63,6 +63,12 @@ class Movie
      */
     private $userMovieLists;
 
+    /**
+     * @ORM\Column(type="string")
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add"})
+     */
+    private $apiCode;
+
     public function __construct()
     {
         $this->userMovieLists = new ArrayCollection();
@@ -73,14 +79,14 @@ class Movie
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): self
+    public function setTitle(string $title): self
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
@@ -147,6 +153,18 @@ class Movie
                 $userMovieList->setMovie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getApiCode(): ?string
+    {
+        return $this->apiCode;
+    }
+
+    public function setApiCode(string $apiCode): self
+    {
+        $this->apiCode = $apiCode;
 
         return $this;
     }
