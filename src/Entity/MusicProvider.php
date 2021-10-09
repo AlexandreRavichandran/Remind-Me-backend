@@ -40,8 +40,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *        "GET": {
  *          "path": "/musics/{apiCode}",
  *          "openapi_context": {
- *              "summary": "Get a music datas by his api code",
- *              "description": "Get a music datas by his api code.",
+ *              "summary": "Get a music datas by his api code (Itunes api_code)",
+ *              "description": "Get a music datas by his api code. The api code must be from Itunes API",
  *           },  
  *      }
  *  }

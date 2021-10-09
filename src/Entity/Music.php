@@ -76,7 +76,7 @@ class Music
     private $userMusicLists;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response"})
      * @Assert\NotBlank(message="The music must have an API Code.")
      */
@@ -216,12 +216,12 @@ class Music
         return $this;
     }
 
-    public function getApiCode(): ?int
+    public function getApiCode(): ?string
     {
         return $this->apiCode;
     }
 
-    public function setApiCode(int $apiCode): self
+    public function setApiCode(string $apiCode): self
     {
         $this->apiCode = $apiCode;
 

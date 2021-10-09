@@ -66,7 +66,8 @@ class Book
     private $userBookLists;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add"})
      */
     private $apiCode;
 
@@ -158,12 +159,12 @@ class Book
         return $this;
     }
 
-    public function getApiCode(): ?int
+    public function getApiCode(): ?string
     {
         return $this->apiCode;
     }
 
-    public function setApiCode(int $apiCode): self
+    public function setApiCode(string $apiCode): self
     {
         $this->apiCode = $apiCode;
 

@@ -17,7 +17,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "path":"/list/musics",
  *          "normalization_context": {
  *              "groups": {"list_music_browse"}
- *          }         
+ *          },
+ *          "openapi_context": {
+ *              "summary": "Get the connected user's music list.",
+ *              "description": "Get the connected user's music list.",
+ *          }
  *       },
  *       "POST": {
  *         "path": "/list/musics",
@@ -27,7 +31,37 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "normalization_context": {
  *              "groups": {"list_music_add_response"}
- *          }   
+ *          },
+ *          "openapi_context": {
+ *              "summary": "Add a music on the current connected user's list",
+ *              "description": "Add a music on the current connected user's list",
+ *              "requestBody": {
+ *                  "content": {
+ *                      "application/ld+json": {
+ *                          "schema": {
+ *                              "type": "object",
+ *                              "properties": {
+ *                                  "title": {"type": "string"},
+ *                                  "category": {"type": "string"},
+ *                                  "releasedAt": {"type": "string"},
+ *                                  "type": {"type": "integer"},
+ *                                  "artist": {"type": "string"},
+ *                                  "apiCode": {"type": "string"},
+ *                                   }
+ *                          },
+ *                          "example": {
+ *                                  "title": "Temps mort",
+ *                                  "category": "Hip-Hop/Rap",
+ *                                  "releasedAt": "2002",
+ *                                  "type": 0,
+ *                                  "artist": "Booba",
+ *                                  "apiCode": "1437135238",
+ *                          }
+ *                       }
+ *                  }
+ *              }
+ *          } 
+
  *       },
  *     },
  *  itemOperations={
@@ -36,6 +70,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "requirements": {"id": "\d+"},
  *          "normalization_context":{
  *              "groups": {"list_music_read"}
+ *          },
+ *          "openapi_context": {
+ *              "summary": "Get details about a music of the connected user's music list.",
+ *              "description": "Get details about a music of the connected user's music list.",
  *          }
  *       },
  *      "PATCH": {
@@ -43,11 +81,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "requirements": {"id": "\d+"},
  *          "denormalization_context": {
  *              "groups": {"list_music_update"}
- *              }
- *          },
+ *              },
+ *          "openapi_context": {
+ *              "summary": "Change order of the music on the connected user's music list",
+ *              "description": "Change order of the music on the connected user's music list",
+ *          }
+ *       },
  *      "DELETE": {
  *          "path":"/list/musics/{id}",
  *          "requirements": {"id": "\d+"},
+ *          "openapi_context": {
+ *              "summary": "Delete a music of the connected user's list",
+ *              "description": "Delete a music of the connected user's list",
+ *          }
  *         }
  *     },
  *  )

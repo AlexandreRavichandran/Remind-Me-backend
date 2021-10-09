@@ -15,12 +15,44 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "path":"/list/movies",
  *          "normalization_context": {
  *              "groups": {"list_movie_browse"}
+ *          },
+ *          "openapi_context": {
+ *              "summary": "Get the connected user's movie list.",
+ *              "description": "Get the connected user's movie list.",
  *          }         
  *       },
  *       "POST": {
  *         "path":"/list/movies",
  *          "denormalization_context": {
  *              "groups": {"list_movie_add"}
+ *          },         
+ *          "openapi_context": {
+ *              "summary": "Add a movie on the current connected user's list",
+ *              "description": "Add a movie on the current connected user's list",
+ *              "requestBody": {
+ *                  "content": {
+ *                      "application/ld+json": {
+ *                          "schema": {
+ *                              "type": "object",
+ *                              "properties": {
+ *                                  "title": {"type": "string"},
+ *                                  "realisator": {"type": "string"},
+ *                                  "category": {"type": "string"},
+ *                                  "releasedAt": {"type": "string"},
+ *                                  "apiCode": {"type": "string"},
+ * 
+ *                                   }
+ *                          },
+ *                          "example": {
+ *                               "title": "The Book of Eli",
+ *                               "realisator": "Albert, Allen Hughes",
+ *                               "category": "science fiction",
+ *                                "releasedAt": "2010",
+ *                               "apiCode": "tt1037705",
+ *                          }
+ *                       }
+ *                  }
+ *              }
  *          }         
  *       },
  *     },
@@ -30,6 +62,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "requirements": {"id": "\d+"},
  *          "normalization_context":{
  *              "groups": {"list_movie_read"}
+ *          },
+ *          "openapi_context": {
+ *              "summary": "Get details about a movie of the connected user's movie list.",
+ *              "description": "Get details about a movie of the connected user's movie list.",
  *          }
  *       },
  *      "PATCH": {
@@ -37,11 +73,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "requirements": {"id": "\d+"},
  *          "denormalization_context": {
  *              "groups": {"list_movie_update"}
- *              }
+ *              },
+ *          "openapi_context": {
+ *              "summary": "Change order of the movie on the connected user's movie list",
+ *              "description": "Change order of the movie on the connected user's movie list",
+ *          }
  *       },
  *      "DELETE": {
  *          "path":"/list/movies/{id}",
- *          "requirements": {"id": "\d+"},   
+ *          "requirements": {"id": "\d+"}, 
+ *          "openapi_context": {
+ *              "summary": "Delete a movie of the connected user's list",
+ *              "description": "Delete a movie of the connected user's list",
+ *          }
  *       }
  *     },
  *  )

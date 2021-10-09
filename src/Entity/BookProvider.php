@@ -31,8 +31,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *        "GET": {
  *          "path": "/books/{apiCode}",
  *          "openapi_context": {
- *              "summary": "Get a book datas by his api code",
- *              "description": "Get a book by his api code.",
+ *              "summary": "Get a book datas by his api code (Google Books api_code)",
+ *              "description": "Get a book by his api code. The api code must be from Google Book API",
  *              },  
  *          }
  *      }

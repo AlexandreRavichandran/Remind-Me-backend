@@ -30,8 +30,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *        "GET": {
  *          "path": "/movies/{apiCode}",
  *          "openapi_context": {
- *              "summary": "Get a movie datas by his api code",
- *              "description": "Get a movie datas by his api code.",
+ *              "summary": "Get a movie datas by his api code (OMDB api_code)",
+ *              "description": "Get a movie datas by his api code. The api code must be from OMDB API",
  *           },           
  *      }
  *  }

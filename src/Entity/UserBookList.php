@@ -15,13 +15,45 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "path": "/list/books",
  *          "normalization_context": {
  *              "groups": {"list_book_browse"}
- *          }         
+ *          },
+ *          "openapi_context": {
+ *              "summary": "Get the connected user's book list.",
+ *              "description": "Get the connected user's book list.",
+ *          }          
  *       },
  *       "POST": {
  *         "path": "/list/books",
  *          "denormalization_context": {
  *              "groups": {"list_book_add"}
- *          }         
+ *          },
+ *          "openapi_context": {
+ *              "summary": "Add a book on the current connected user's list",
+ *              "description": "Add a book on the current connected user's list",
+ *              "requestBody": {
+ *                  "content": {
+ *                      "application/ld+json": {
+ *                          "schema": {
+ *                              "type": "object",
+ *                              "properties": {
+ *                                  "title": {"type": "string"},
+ *                                  "author": {"type": "string"},
+ *                                  "category": {"type": "string"},
+ *                                  "releasedAt": {"type": "string"},
+ *                                  "apiCode": {"type": "string"},
+ * 
+ *                                   }
+ *                          },
+ *                          "example": {
+ *                              "title": "The Alchemist",
+ *                              "author": "Paulo Coelho",
+ *                              "category": "religion",
+ *                              "releasedAt": "2006",
+ *                              "apiCode": "FzVjBgAAQBAJ"
+ *                          }
+ *                       }
+ *                  }
+ *              }
+ *          }
  *       },
  *   },
  *  itemOperations={
@@ -31,17 +63,29 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "normalization_context":{
  *              "groups": {"list_book_read"}
  *          },
+ *          "openapi_context": {
+ *              "summary": "Get details about a book of the connected user's book list.",
+ *              "description": "Get details about a book of the connected user's book list.",
+ *          }
  *       },
  *      "PATCH": {
  *          "path":"/list/books/{id}",
  *          "requirements": {"id": "\d+"},
  *          "denormalization_context": {
  *              "groups": {"list_book_update"}
- *              }
+ *              },
+ *          "openapi_context": {
+ *              "summary": "Change order of the book on the connected user's book list",
+ *              "description": "Change order of the book on the connected user's book list",
+ *          }
  *          },
  *      "DELETE": {
  *          "path":"/list/books/{id}",
- *          "requirements": {"id": "\d+"},  
+ *          "requirements": {"id": "\d+"},
+ *          "openapi_context": {
+ *              "summary": "Delete a book of the connected user's list",
+ *              "description": "Delete a book of the connected user's list",
+ *          }
  *          }
  *     },
  *  )
