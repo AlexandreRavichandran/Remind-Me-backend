@@ -43,12 +43,11 @@ class ListMovieHandler implements EventSubscriberInterface
             $user = $this->security->getUser();
 
             //If the movie is not already on the database, add it  
-            $movies = $this->movieRepository->findAll();
-            $exists = in_array($movie, $movies);
-            if (!$exists) {
+            $bookAlreadyInDB = $this->movieRepository->findByApiCode($movie->getApiCode());
+            if (!$bookAlreadyInDB) {
                 $this->em->persist($movie);
             } else {
-                $datas->setMovie($movie);
+                $datas->setMovie($bookAlreadyInDB);
             }
 
             //set the list order for the movie currently added

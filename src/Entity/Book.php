@@ -19,12 +19,13 @@ class Book
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"list_book_add_response"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add"})
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
      * 
      * @Assert\NotBlank(message="The book's title can't be blank.")
      */
@@ -32,7 +33,7 @@ class Book
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_book_read","list_book_add"})
+     * @Groups({"list_book_read","list_book_add","list_book_add_response"})
      * 
      * @Assert\NotBlank(message="The book's author can't be blank.")
      */
@@ -40,7 +41,7 @@ class Book
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add"})
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
      * 
      * @Assert\NotBlank(message="The book must a category.")
      */
@@ -48,7 +49,7 @@ class Book
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"list_book_read","list_book_add"})
+     * @Groups({"list_book_read","list_book_add","list_book_add_response"})
      * 
      * @Assert\NotBlank(message="The book must have a released date.")
      * @Assert\Regex(
@@ -67,7 +68,7 @@ class Book
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add"})
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
      */
     private $apiCode;
 

@@ -42,14 +42,13 @@ class ListBookHandler implements EventSubscriberInterface
 
             $book = $datas->getBook();
             $user = $this->security->getUser();
-            
+
             //If the book is not already on the database, add it  
-            $books = $this->bookRepository->findAll();
-            $exists = in_array($book, $books);
-            if (!$exists) {
+            $bookAlreadyInDB = $this->bookRepository->findByApiCode($book->getApiCode());
+            if (!$bookAlreadyInDB) {
                 $this->em->persist($book);
             } else {
-                $datas->setBook($book);
+                $datas->setBook($bookAlreadyInDB);
             }
 
             //set the list order for the book currently added

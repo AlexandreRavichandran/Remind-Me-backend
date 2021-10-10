@@ -19,32 +19,20 @@ class MovieRepository extends ServiceEntityRepository
         parent::__construct($registry, Movie::class);
     }
 
-    // /**
-    //  * @return Movie[] Returns an array of Movie objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Search a movie in the movie database by his api code
+     * 
+     * @param string $apiCode The api code of the movie to search
+     * 
+     * @return Movie|null If the movie exists in the database, it is returned
+     */
+    public function findByApiCode(string $apiCode)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
+        return $this
+            ->createQueryBuilder('m')
+            ->andWhere('m.apiCode = :apiCode')
+            ->setParameter('apiCode', $apiCode)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Movie
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

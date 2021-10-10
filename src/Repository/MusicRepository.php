@@ -19,32 +19,21 @@ class MusicRepository extends ServiceEntityRepository
         parent::__construct($registry, Music::class);
     }
 
-    // /**
-    //  * @return Music[] Returns an array of Music objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Music
+    /**
+     * Search a music in the music database by his api code
+     * 
+     * @param string $apiCode The api code of the music to search
+     * 
+     * @return Music|null If the music exists in the database, it is returned.
+     */
+    public function findByApiCode(string $apiCode)
     {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this
+            ->createQueryBuilder('m')
+            ->andWhere('m.apiCode = :apiCode')
+            ->setParameter('apiCode', $apiCode)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
 }

@@ -22,7 +22,8 @@ class Music
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @ApiProperty(identifier=false)
+     * @Groups({"list_music_add_response"})
+
      */
     private $id;
 

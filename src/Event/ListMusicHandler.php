@@ -43,12 +43,11 @@ class ListMusicHandler implements EventSubscriberInterface
             $user = $this->security->getUser();
             
             //If the music is not already on the database, add it  
-            $musics = $this->musicRepository->findAll();
-            $exists = in_array($music, $musics);
-            if (!$exists) {
+            $musicAlreadyInDB = $this->musicRepository->findByApiCode($music->getApiCode());
+            if (!$musicAlreadyInDB) {
                 $this->em->persist($music);
             } else {
-                $datas->setMusic($music);
+                $datas->setMusic($musicAlreadyInDB);
             }
             
             //set the list order for the music currently added

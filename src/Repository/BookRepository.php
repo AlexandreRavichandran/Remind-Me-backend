@@ -19,32 +19,20 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
-    // /**
-    //  * @return Book[] Returns an array of Book objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Search a book in the book database by his api code
+     * 
+     * @param string $apiCode The api code of the book to search
+     * 
+     * @return Book|null If the book exists in the database, it is returned
+     */
+    public function findByApiCode(string $apiCode)
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+        return $this
+            ->createQueryBuilder('b')
+            ->andWhere('b.apiCode = :apiCode')
+            ->setParameter('apiCode', $apiCode)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Book
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

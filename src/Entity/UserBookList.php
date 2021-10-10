@@ -26,6 +26,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "denormalization_context": {
  *              "groups": {"list_book_add"}
  *          },
+ *          "normalization_context": {
+ *              "groups": {"list_book_add_response"}
+ *          },
  *          "openapi_context": {
  *              "summary": "Add a book on the current connected user's list",
  *              "description": "Add a book on the current connected user's list",
@@ -102,14 +105,14 @@ class UserBookList
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"list_book_browse","list_book_read","list_book_update"})
+     * @Groups({"list_book_browse","list_book_read","list_book_update","list_book_add_response"})
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="userBookLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add"})
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
      * @Assert\NotBlank(message="You must add book datas")
      * @Assert\Valid
      */
