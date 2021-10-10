@@ -38,20 +38,26 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                          "schema": {
  *                              "type": "object",
  *                              "properties": {
- *                                  "title": {"type": "string"},
- *                                  "author": {"type": "string"},
- *                                  "category": {"type": "string"},
- *                                  "releasedAt": {"type": "string"},
- *                                  "apiCode": {"type": "string"},
- * 
- *                                   }
+ *                                  "book": {
+ *                                      "type":"object",
+ *                                      "properties": {
+ *                                      "title": {"type": "string"},
+ *                                      "author": {"type": "string"},
+ *                                      "category": {"type": "string"},
+ *                                      "releasedAt": {"type": "string"},
+ *                                      "apiCode": {"type": "string"},
+ *                                      }
+ *                                   },
+ *                              }
  *                          },
  *                          "example": {
+ *                              "book": {
  *                              "title": "The Alchemist",
  *                              "author": "Paulo Coelho",
  *                              "category": "religion",
  *                              "releasedAt": "2006",
  *                              "apiCode": "FzVjBgAAQBAJ"
+ *                              }   
  *                          }
  *                       }
  *                  }

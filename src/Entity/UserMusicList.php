@@ -41,21 +41,28 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                          "schema": {
  *                              "type": "object",
  *                              "properties": {
- *                                  "title": {"type": "string"},
- *                                  "category": {"type": "string"},
- *                                  "releasedAt": {"type": "string"},
- *                                  "type": {"type": "integer"},
- *                                  "artist": {"type": "string"},
- *                                  "apiCode": {"type": "string"},
- *                                   }
+ *                                  "music": {
+ *                                      "type":"object",
+ *                                      "properties": {
+ *                                      "title": {"type": "string"},
+ *                                      "category": {"type": "string"},
+ *                                      "releasedAt": {"type": "string"},
+ *                                      "type": {"type": "string"},
+ *                                      "artist": {"type": "string"},
+ *                                      "apiCode": {"type": "string"},
+ *                                      }
+ *                                   },
+ *                              }
  *                          },
  *                          "example": {
- *                                  "title": "Temps mort",
- *                                  "category": "Hip-Hop/Rap",
- *                                  "releasedAt": "2002",
- *                                  "type": 0,
- *                                  "artist": "Booba",
- *                                  "apiCode": "1437135238",
+ *                              "music": {
+ *                              "title": "Temps mort",
+ *                              "category": "Hip-Hop/Rap",
+ *                              "releasedAt": "2002",
+ *                              "type": "Album",
+ *                              "artist": "Booba",
+ *                              "apiCode": "1437135238"
+ *                              }   
  *                          }
  *                       }
  *                  }

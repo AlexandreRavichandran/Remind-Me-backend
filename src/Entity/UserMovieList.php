@@ -38,20 +38,26 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                          "schema": {
  *                              "type": "object",
  *                              "properties": {
- *                                  "title": {"type": "string"},
- *                                  "realisator": {"type": "string"},
- *                                  "category": {"type": "string"},
- *                                  "releasedAt": {"type": "string"},
- *                                  "apiCode": {"type": "string"},
- * 
- *                                   }
+ *                                  "movie": {
+ *                                      "type":"object",
+ *                                      "properties": {
+ *                                      "title": {"type": "string"},
+ *                                      "realisator": {"type": "string"},
+ *                                      "category": {"type": "string"},
+ *                                      "releasedAt": {"type": "string"},
+ *                                      "apiCode": {"type": "string"},
+ *                                      }
+ *                                   },
+ *                              }
  *                          },
  *                          "example": {
- *                               "title": "The Book of Eli",
- *                               "realisator": "Albert, Allen Hughes",
- *                               "category": "science fiction",
- *                                "releasedAt": "2010",
- *                               "apiCode": "tt1037705",
+ *                              "movie": {
+ *                              "title": "The Book of Eli",
+ *                              "realisator": "Albert, Allen Hughes",
+ *                              "category": "science fiction",
+ *                              "releasedAt": "2010",
+ *                              "apiCode": "tt1037705"
+ *                              }   
  *                          }
  *                       }
  *                  }
