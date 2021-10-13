@@ -41,12 +41,14 @@ class MovieProvider
 {
     /**
      * @ApiProperty(identifier=true)
-    */
+     */
     private $apiCode;
     private $title;
     private $category;
     private $realisator;
     private $releasedAt;
+    private $coverUrl;
+    private $synopsis;
 
 
     /**
@@ -146,6 +148,46 @@ class MovieProvider
     public function setReleasedAt($releasedAt)
     {
         $this->releasedAt = $releasedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of coverUrl
+     */ 
+    public function getCoverUrl()
+    {
+        return $this->coverUrl;
+    }
+
+    /**
+     * Set the value of coverUrl
+     *
+     * @return  self
+     */ 
+    public function setCoverUrl($coverUrl)
+    {
+        $this->coverUrl = $coverUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of synopsis
+     */ 
+    public function getSynopsis()
+    {
+        return $this->synopsis;
+    }
+
+    /**
+     * Set the value of synopsis
+     *
+     * @return  self
+     */ 
+    public function setSynopsis($synopsis)
+    {
+        $this->synopsis = $synopsis;
 
         return $this;
     }

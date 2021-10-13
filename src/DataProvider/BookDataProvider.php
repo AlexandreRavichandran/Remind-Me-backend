@@ -36,22 +36,33 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
                 ->setTitle($bookData['volumeInfo']['title'])
                 ->setReleasedAt($bookData['volumeInfo']['publishedDate'])
                 ->setAuthor(join(', ', $bookData['volumeInfo']['authors']));
+            if (isset($bookData['volumeInfo']['description'])) {
+                $book->setSynopsis($bookData['volumeInfo']['description']);
+            }
+            if (isset($bookData['volumeInfo']['imageLinks']['thumbnail'])) {
+                $book->setCoverUrl($bookData['volumeInfo']['imageLinks']['thumbnail']);
+            }
 
             $datas[] = $book;
         }
         return $datas;
     }
-    
+
     public function getItem(string $resourceClass, $id, ?string $operationName = null, array $context = [])
     {
         $response = $this->executeApiRequest($id, false);
+        dd($response);
         $book = new BookProvider();
         $book
             ->setApiCode($response['id'])
             ->setTitle($response['volumeInfo']['title'])
             ->setReleasedAt($response['volumeInfo']['publishedDate'])
             ->setAuthor(join(', ', $response['volumeInfo']['authors']))
-            ->setCategory(join(', ', $response['volumeInfo']['categories']));
+            ->setSynopsis($response['volumeInfo']['description']);
+        if (isset($bookData['volumeInfo']['imageLinks']['large'])) {
+            $book->setCoverUrl($response['volumeInfo']['imageLinks']['large']);
+        }
+        $book->setCategory(join(', ', $response['volumeInfo']['categories']));
 
         return $book;
     }

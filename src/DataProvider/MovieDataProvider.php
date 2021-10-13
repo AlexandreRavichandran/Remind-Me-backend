@@ -30,7 +30,6 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
         $query = $context['filters']['q'];
 
         $response = $this->executeApiRequest($query, true);
-
         if ($response['Response'] === "True") {
             $datas = [];
             foreach ($response['Search'] as $movieData) {
@@ -38,8 +37,8 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
                 $movie
                     ->setApiCode($movieData['imdbID'])
                     ->setTitle($movieData['Title'])
-                    ->setReleasedAt($movieData['Year']);
-
+                    ->setReleasedAt($movieData['Year'])
+                    ->setCoverUrl($movieData['Poster']);
                 $datas[] = $movie;
             }
         }
@@ -57,7 +56,9 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
                 ->setTitle($response['Title'])
                 ->setReleasedAt($response['Year'])
                 ->setCategory($response['Genre'])
-                ->setRealisator($response['Director']);
+                ->setRealisator($response['Director'])
+                ->setCoverUrl($response['Poster'])
+                ->setSynopsis($response['Plot']);
         }
 
         return $movie;
