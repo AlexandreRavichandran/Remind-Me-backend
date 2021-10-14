@@ -58,7 +58,8 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
                 ->setCategory($response['Genre'])
                 ->setRealisator($response['Director'])
                 ->setCoverUrl($response['Poster'])
-                ->setSynopsis($response['Plot']);
+                ->setSynopsis($response['Plot'])
+                ->setActors($response['Actors']);
         }
 
         return $movie;

@@ -49,6 +49,7 @@ class MovieProvider
     private $releasedAt;
     private $coverUrl;
     private $synopsis;
+    private $actors;
 
 
     /**
@@ -188,6 +189,26 @@ class MovieProvider
     public function setSynopsis($synopsis)
     {
         $this->synopsis = $synopsis;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of actors
+     */ 
+    public function getActors()
+    {
+        return $this->actors;
+    }
+
+    /**
+     * Set the value of actors
+     *
+     * @return  self
+     */ 
+    public function setActors($actors)
+    {
+        $this->actors = $actors;
 
         return $this;
     }

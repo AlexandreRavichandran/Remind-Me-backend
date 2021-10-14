@@ -50,6 +50,9 @@ class MusicSongProvider
     private $pictureUrl;
     private $category;
     private $releasedAt;
+    private $artistApiCode;
+    private $albumApiCode;
+    private $artistPictureUrl;
 
     /**
      * Get the value of apiCode
@@ -207,6 +210,66 @@ class MusicSongProvider
     public function setReleasedAt($releasedAt)
     {
         $this->releasedAt = $releasedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of artistApiCode
+     */ 
+    public function getArtistApiCode()
+    {
+        return $this->artistApiCode;
+    }
+
+    /**
+     * Set the value of artistApiCode
+     *
+     * @return  self
+     */ 
+    public function setArtistApiCode($artistApiCode)
+    {
+        $this->artistApiCode = $artistApiCode;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of albumApiCode
+     */ 
+    public function getAlbumApiCode()
+    {
+        return $this->albumApiCode;
+    }
+
+    /**
+     * Set the value of albumApiCode
+     *
+     * @return  self
+     */ 
+    public function setAlbumApiCode($albumApiCode)
+    {
+        $this->albumApiCode = $albumApiCode;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of artistPictureUrl
+     */ 
+    public function getArtistPictureUrl()
+    {
+        return $this->artistPictureUrl;
+    }
+
+    /**
+     * Set the value of artistPictureUrl
+     *
+     * @return  self
+     */ 
+    public function setArtistPictureUrl($artistPictureUrl)
+    {
+        $this->artistPictureUrl = $artistPictureUrl;
 
         return $this;
     }

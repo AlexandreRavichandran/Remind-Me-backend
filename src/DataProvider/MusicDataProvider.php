@@ -67,7 +67,6 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
         }
         $requestUrl = $requestUrl . $id;
         $response = $this->executeApiRequest($requestUrl, null, false);
-        
         switch ($type) {
             case 'album':
                 $music = new MusicAlbumProvider;
@@ -77,7 +76,9 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
                     ->setReleasedAt($response['release_date'])
                     ->setApiCode($response['id'])
                     ->setCategory($response['genres']['data'][0]['name'])
-                    ->setPictureUrl($response['cover_xl']);
+                    ->setPictureUrl($response['cover_xl'])
+                    ->setArtistApiCode($response['artist']['id']);
+
                 $tracklist = [];
                 foreach ($response['tracks']['data'] as $track) {
                     $tracklist[] = $track['title'];
@@ -94,7 +95,10 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
                     ->setApiCode($response['id'])
                     ->setPreviewUrl($response['preview'])
                     ->setPictureUrl($response['album']['cover_xl'])
-                    ->setAlbum($response['album']['title']);
+                    ->setAlbum($response['album']['title'])
+                    ->setAlbumApiCode($response['album']['id'])
+                    ->setArtistPictureUrl($response['artist']['picture_xl'])
+                    ->setArtistApiCode($response['artist']['id']);
                 break;
             case 'artist':
                 $music = new MusicArtistProvider;
@@ -154,6 +158,8 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
                 ->setApiCode($songData['id'])
                 ->setArtist($songData['artist']['name'])
                 ->setTitle($songData['title'])
+                ->setAlbumApiCode($songData['album']['id'])
+                ->setArtistApiCode($songData['album']['id'])
                 ->setPictureUrl($songData['album']['cover_xl'])
                 ->setPreviewUrl($songData['preview']);
             $datas[] = $song;
@@ -170,6 +176,7 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
             $album = new MusicAlbumProvider();
             $album
                 ->setApiCode($albumData['album']['id'])
+                ->setArtistApiCode($albumData['artist']['id'])
                 ->setTitle($albumData['album']['title'])
                 ->setArtist($albumData['artist']['name'])
                 ->setPictureUrl($albumData['album']['cover_xl']);

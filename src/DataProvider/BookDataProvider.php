@@ -51,7 +51,6 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
     public function getItem(string $resourceClass, $id, ?string $operationName = null, array $context = [])
     {
         $response = $this->executeApiRequest($id, false);
-        dd($response);
         $book = new BookProvider();
         $book
             ->setApiCode($response['id'])
@@ -59,7 +58,7 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
             ->setReleasedAt($response['volumeInfo']['publishedDate'])
             ->setAuthor(join(', ', $response['volumeInfo']['authors']))
             ->setSynopsis($response['volumeInfo']['description']);
-        if (isset($bookData['volumeInfo']['imageLinks']['large'])) {
+        if (isset($response['volumeInfo']['imageLinks']['large'])) {
             $book->setCoverUrl($response['volumeInfo']['imageLinks']['large']);
         }
         $book->setCategory(join(', ', $response['volumeInfo']['categories']));

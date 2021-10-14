@@ -49,6 +49,7 @@ class MusicAlbumProvider
     private $pictureUrl;
     private $artist;
     private $releasedAt;
+    private $artistApiCode;
 
     /**
      * Get the value of apiCode
@@ -186,6 +187,26 @@ class MusicAlbumProvider
     public function setReleasedAt($releasedAt)
     {
         $this->releasedAt = $releasedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of artistApiCode
+     */ 
+    public function getArtistApiCode()
+    {
+        return $this->artistApiCode;
+    }
+
+    /**
+     * Set the value of artistApiCode
+     *
+     * @return  self
+     */ 
+    public function setArtistApiCode($artistApiCode)
+    {
+        $this->artistApiCode = $artistApiCode;
 
         return $this;
     }

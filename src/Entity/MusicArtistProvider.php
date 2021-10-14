@@ -45,6 +45,7 @@ class MusicArtistProvider
     private $apiCode;
     private $name;
     private $pictureUrl;
+    private $albums;
 
     /**
      * Get the value of apiCode
@@ -102,6 +103,26 @@ class MusicArtistProvider
     public function setPictureUrl($pictureUrl)
     {
         $this->pictureUrl = $pictureUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of albums
+     */ 
+    public function getAlbums()
+    {
+        return $this->albums;
+    }
+
+    /**
+     * Set the value of albums
+     *
+     * @return  self
+     */ 
+    public function setAlbums($albums)
+    {
+        $this->albums = $albums;
 
         return $this;
     }
