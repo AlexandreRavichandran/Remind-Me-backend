@@ -46,7 +46,8 @@ class AppFixtures extends Fixture
                 ->setTitle($faker->word())
                 ->setRealisator($faker->firstName() . ' ' . $faker->lastName())
                 ->setCategory($faker->randomElement($movieCategories))
-                ->setReleasedAt($faker->date('Y'));
+                ->setReleasedAt($faker->date('Y'))
+                ->setPictureUrl('https://placehold.it/300x300');
 
             $movies[] = $movie;
             $manager->persist($movie);
@@ -61,7 +62,8 @@ class AppFixtures extends Fixture
                 ->setType($faker->randomElement($musicTypes))
                 ->setTitle($faker->word())
                 ->setCategory($faker->randomElement($musicCategories))
-                ->setReleasedAt($faker->date('d m Y'));
+                ->setReleasedAt($faker->date('d m Y'))
+                ->setPictureUrl('https://placehold.it/300x300');
             if ($music->getType() === 'Artist') {
                 $music->setArtist($faker->firstName . ' ' . $faker->lastName);
             }
@@ -79,7 +81,8 @@ class AppFixtures extends Fixture
                 ->setTitle($faker->word())
                 ->setAuthor($faker->firstName . ' ' . $faker->lastName)
                 ->setCategory($faker->randomElement($bookCategories))
-                ->setReleasedAt($faker->date('d m Y'));
+                ->setReleasedAt($faker->date('d m Y'))
+                ->setPictureUrl('https://placehold.it/300x300');
 
             $books[] = $book;
             $manager->persist($book);

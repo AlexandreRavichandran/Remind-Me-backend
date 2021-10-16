@@ -28,22 +28,24 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
         $query = $context['filters']['q'];
         $response = $this->executeApiRequest($query);
         $datas = [];
-        foreach ($response['items'] as $bookData) {
-            $book = new BookProvider();
-            $book
-                ->setId($bookData['id'])
-                ->setApiCode($bookData['id'])
-                ->setTitle($bookData['volumeInfo']['title'])
-                ->setReleasedAt($bookData['volumeInfo']['publishedDate'])
-                ->setAuthor(join(', ', $bookData['volumeInfo']['authors']));
-            if (isset($bookData['volumeInfo']['description'])) {
-                $book->setSynopsis($bookData['volumeInfo']['description']);
-            }
-            if (isset($bookData['volumeInfo']['imageLinks']['thumbnail'])) {
-                $book->setCoverUrl($bookData['volumeInfo']['imageLinks']['thumbnail']);
-            }
+        if ($response['totalItems'] !== 0) {
+            foreach ($response['items'] as $bookData) {
+                $book = new BookProvider();
+                $book
+                    ->setId($bookData['id'])
+                    ->setApiCode($bookData['id'])
+                    ->setTitle($bookData['volumeInfo']['title'])
+                    ->setReleasedAt($bookData['volumeInfo']['publishedDate'])
+                    ->setAuthor(join(', ', $bookData['volumeInfo']['authors']));
+                if (isset($bookData['volumeInfo']['description'])) {
+                    $book->setSynopsis($bookData['volumeInfo']['description']);
+                }
+                if (isset($bookData['volumeInfo']['imageLinks']['thumbnail'])) {
+                    $book->setCoverUrl($bookData['volumeInfo']['imageLinks']['thumbnail']);
+                }
 
-            $datas[] = $book;
+                $datas[] = $book;
+            }
         }
         return $datas;
     }
@@ -74,7 +76,9 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
         } else {
             $addQuery = '/' . $query;
         }
+
         $response = $this->client->request('GET', SELF::API_COLLECTION_URL . $addQuery);
+
         return $response->toArray();
     }
 }

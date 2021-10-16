@@ -3,6 +3,7 @@
 namespace App\DataProvider;
 
 use App\Entity\MovieProvider;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
@@ -21,14 +22,12 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
 
     public function supports(string $resourceClass, ?string $operationName = null, array $context = []): bool
     {
-
         return $resourceClass === MovieProvider::class;
     }
 
     public function getCollection(string $resourceClass, ?string $operationName = null, array $context = [])
     {
         $query = $context['filters']['q'];
-
         $response = $this->executeApiRequest($query, true);
         if ($response['Response'] === "True") {
             $datas = [];
@@ -49,7 +48,6 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
     {
         $response = $this->executeApiRequest($id, false);
         if ($response['Response'] === "True") {
-
             $movie = new MovieProvider();
             $movie
                 ->setApiCode($response['imdbID'])
@@ -60,9 +58,9 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
                 ->setCoverUrl($response['Poster'])
                 ->setSynopsis($response['Plot'])
                 ->setActors($response['Actors']);
-        }
 
-        return $movie;
+            return $movie;
+        }
     }
 
     private function executeApiRequest(string $query, bool $collection = true)

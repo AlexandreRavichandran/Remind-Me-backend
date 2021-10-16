@@ -10,6 +10,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
+ *  attributes={
+ *      "order":{"listOrder":"asc"}
+ *  },
  *  collectionOperations={
  *      "GET": {
  *         "path":"/list/movies",

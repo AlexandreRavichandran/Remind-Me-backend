@@ -2,6 +2,7 @@
 
 namespace App\DataProvider;
 
+use Exception;
 use App\Entity\MusicSongProvider;
 use App\Entity\MusicAlbumProvider;
 use App\Entity\MusicArtistProvider;
@@ -9,6 +10,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface, ItemDataProviderInterface
 {
@@ -23,13 +25,12 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
 
     public function supports(string $resourceClass, ?string $operationName = null, array $context = []): bool
     {
-        return $resourceClass === MusicSongProvider::class || MusicArtistProvider::class || MusicAlbumProvider::class;
+        return ($resourceClass === MusicSongProvider::class) || ($resourceClass === MusicArtistProvider::class) || ($resourceClass === MusicAlbumProvider::class);
     }
 
     public function getCollection(string $resourceClass, ?string $operationName = null, array $context = [])
     {
         $query = $context['filters']['q'];
-
         switch ($resourceClass) {
             case 'App\Entity\MusicAlbumProvider':
                 $addEntity = 'album:';
@@ -67,47 +68,55 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
         }
         $requestUrl = $requestUrl . $id;
         $response = $this->executeApiRequest($requestUrl, null, false);
-        switch ($type) {
-            case 'album':
-                $music = new MusicAlbumProvider;
-                $music
-                    ->setArtist($response['artist']['name'])
-                    ->setTitle($response['title'])
-                    ->setReleasedAt($response['release_date'])
-                    ->setApiCode($response['id'])
-                    ->setCategory($response['genres']['data'][0]['name'])
-                    ->setPictureUrl($response['cover_xl'])
-                    ->setArtistApiCode($response['artist']['id']);
+        if (!isset($response['error'])) {
 
-                $tracklist = [];
-                foreach ($response['tracks']['data'] as $track) {
-                    $tracklist[] = $track['title'];
-                }
-                $music->setTracklist($tracklist);
+            switch ($type) {
+                case 'album':
+                    $music = new MusicAlbumProvider;
+                    $music
+                        ->setArtist($response['artist']['name'])
+                        ->setTitle($response['title'])
+                        ->setReleasedAt($response['release_date'])
+                        ->setApiCode($response['id'])
+                        ->setCategory($response['genres']['data'][0]['name'])
+                        ->setPictureUrl($response['cover_xl'])
+                        ->setArtistApiCode($response['artist']['id']);
 
-                break;
-            case 'song':
-                $music = new MusicSongProvider;
-                $music
-                    ->setArtist($response['artist']['name'])
-                    ->setTitle($response['title'])
-                    ->setReleasedAt($response['release_date'])
-                    ->setApiCode($response['id'])
-                    ->setPreviewUrl($response['preview'])
-                    ->setPictureUrl($response['album']['cover_xl'])
-                    ->setAlbum($response['album']['title'])
-                    ->setAlbumApiCode($response['album']['id'])
-                    ->setArtistPictureUrl($response['artist']['picture_xl'])
-                    ->setArtistApiCode($response['artist']['id']);
-                break;
-            case 'artist':
-                $music = new MusicArtistProvider;
-                $music
-                    ->setName($response['name'])
-                    ->setApiCode($response['id'])
-                    ->setPictureUrl($response['picture_xl']);
+                    $tracklist = [];
+                    foreach ($response['tracks']['data'] as $track) {
+                        $tracklist[] = [
+                            'apiCode' => $track['id'],
+                            'title' => $track['title']
+                        ];
+                    }
+                    $music->setTracklist($tracklist);
 
-                break;
+                    break;
+                case 'song':
+                    $music = new MusicSongProvider;
+                    $music
+                        ->setArtist($response['artist']['name'])
+                        ->setTitle($response['title'])
+                        ->setReleasedAt($response['release_date'])
+                        ->setApiCode($response['id'])
+                        ->setPreviewUrl($response['preview'])
+                        ->setPictureUrl($response['album']['cover_xl'])
+                        ->setAlbum($response['album']['title'])
+                        ->setAlbumApiCode($response['album']['id'])
+                        ->setArtistPictureUrl($response['artist']['picture_xl'])
+                        ->setArtistApiCode($response['artist']['id']);
+                    break;
+                case 'artist':
+                    $music = new MusicArtistProvider;
+                    $music
+                        ->setName($response['name'])
+                        ->setApiCode($response['id'])
+                        ->setPictureUrl($response['picture_xl']);
+
+                    break;
+            }
+        } else {
+            return new JsonResponse([], 404);
         }
         return $music;
     }
@@ -119,6 +128,7 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
         } elseif (!$isCollection) {
             $response = $this->client->request('GET', SELF::API_ITEM_URL . $query);
         }
+
         return $response->toArray();
     }
 
@@ -127,19 +137,21 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
         $response = $this->executeApiRequest($query, $entity);
         $datas = [];
         $exists = false;
-        foreach ($response['data'] as $artistData) {
-            $artist = new MusicArtistProvider;
-            $artist
-                ->setApiCode($artistData['artist']['id'])
-                ->setName($artistData['artist']['name'])
-                ->setPictureUrl($artistData['artist']['picture_xl']);
-            foreach ($datas as $data) {
-                if ($artist->getApiCode() === $data->getApiCode()) {
-                    $exists = true;
+        if ($response['total'] > 0) {
+            foreach ($response['data'] as $artistData) {
+                $artist = new MusicArtistProvider;
+                $artist
+                    ->setApiCode($artistData['artist']['id'])
+                    ->setName($artistData['artist']['name'])
+                    ->setPictureUrl($artistData['artist']['picture_xl']);
+                foreach ($datas as $data) {
+                    if ($artist->getApiCode() === $data->getApiCode()) {
+                        $exists = true;
+                    }
                 }
-            }
-            if (!$exists) {
-                $datas[] = $artist;
+                if (!$exists) {
+                    $datas[] = $artist;
+                }
             }
         }
 
@@ -151,18 +163,19 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
         $response = $this->executeApiRequest($query, $entity);
         $datas = [];
         $exists = false;
-        foreach ($response['data'] as $songData) {
-
-            $song = new MusicSongProvider();
-            $song
-                ->setApiCode($songData['id'])
-                ->setArtist($songData['artist']['name'])
-                ->setTitle($songData['title'])
-                ->setAlbumApiCode($songData['album']['id'])
-                ->setArtistApiCode($songData['album']['id'])
-                ->setPictureUrl($songData['album']['cover_xl'])
-                ->setPreviewUrl($songData['preview']);
-            $datas[] = $song;
+        if ($response['total'] > 0) {
+            foreach ($response['data'] as $songData) {
+                $song = new MusicSongProvider();
+                $song
+                    ->setApiCode($songData['id'])
+                    ->setArtist($songData['artist']['name'])
+                    ->setTitle($songData['title'])
+                    ->setAlbumApiCode($songData['album']['id'])
+                    ->setArtistApiCode($songData['album']['id'])
+                    ->setPictureUrl($songData['album']['cover_xl'])
+                    ->setPreviewUrl($songData['preview']);
+                $datas[] = $song;
+            }
         }
 
         return $datas;
@@ -172,23 +185,27 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
         $response = $this->executeApiRequest($query, $entity);
         $datas = [];
         $exists = false;
-        foreach ($response['data'] as $albumData) {
-            $album = new MusicAlbumProvider();
-            $album
-                ->setApiCode($albumData['album']['id'])
-                ->setArtistApiCode($albumData['artist']['id'])
-                ->setTitle($albumData['album']['title'])
-                ->setArtist($albumData['artist']['name'])
-                ->setPictureUrl($albumData['album']['cover_xl']);
+        if ($response['total'] > 0) {
+            foreach ($response['data'] as $albumData) {
+                $album = new MusicAlbumProvider();
+                $album
+                    ->setApiCode($albumData['album']['id'])
+                    ->setArtistApiCode($albumData['artist']['id'])
+                    ->setTitle($albumData['album']['title'])
+                    ->setArtist($albumData['artist']['name'])
+                    ->setPictureUrl($albumData['album']['cover_xl']);
 
-            foreach ($datas as $data) {
-                if ($album->getApiCode() === $data->getApiCode()) {
-                    $exists = true;
+                foreach ($datas as $data) {
+                    if ($album->getApiCode() === $data->getApiCode()) {
+                        $exists = true;
+                    }
+                }
+                if (!$exists) {
+                    $datas[] = $album;
                 }
             }
-            if (!$exists) {
-                $datas[] = $album;
-            }
+        } else {
+            return new JsonResponse([], 404);
         }
         return $datas;
     }

@@ -70,6 +70,12 @@ class Movie
      */
     private $apiCode;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
+     */
+    private $pictureUrl;
+
     public function __construct()
     {
         $this->userMovieLists = new ArrayCollection();
@@ -166,6 +172,18 @@ class Movie
     public function setApiCode(string $apiCode): self
     {
         $this->apiCode = $apiCode;
+
+        return $this;
+    }
+
+    public function getPictureUrl(): ?string
+    {
+        return $this->pictureUrl;
+    }
+
+    public function setPictureUrl(string $pictureUrl): self
+    {
+        $this->pictureUrl = $pictureUrl;
 
         return $this;
     }
