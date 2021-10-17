@@ -28,9 +28,7 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
-        $movieCategories = ['horror', 'action', 'adventure', 'comedy', 'fantastic', 'drama', 'love'];
-        $bookCategories = ['horror', 'action', 'adventure', 'biography', 'self-development', 'financial', 'love'];
-        $musicCategories = ['rap', 'rnb', 'classical', 'rock\'n\'roll', 'metal', 'various'];
+
         $musicTypes = ['Album', 'Song', 'Artist'];
 
         $movies = [];
@@ -44,8 +42,6 @@ class AppFixtures extends Fixture
             $movie
                 ->setApiCode(mt_rand(10000, 99999))
                 ->setTitle($faker->word())
-                ->setRealisator($faker->firstName() . ' ' . $faker->lastName())
-                ->setCategory($faker->randomElement($movieCategories))
                 ->setReleasedAt($faker->date('Y'))
                 ->setPictureUrl('https://placehold.it/300x300');
 
@@ -61,7 +57,6 @@ class AppFixtures extends Fixture
                 ->setApiCode(mt_rand(10000, 99999))
                 ->setType($faker->randomElement($musicTypes))
                 ->setTitle($faker->word())
-                ->setCategory($faker->randomElement($musicCategories))
                 ->setReleasedAt($faker->date('d m Y'))
                 ->setPictureUrl('https://placehold.it/300x300');
             if ($music->getType() === 'Artist') {
@@ -80,7 +75,6 @@ class AppFixtures extends Fixture
                 ->setApiCode(mt_rand(10000, 99999))
                 ->setTitle($faker->word())
                 ->setAuthor($faker->firstName . ' ' . $faker->lastName)
-                ->setCategory($faker->randomElement($bookCategories))
                 ->setReleasedAt($faker->date('d m Y'))
                 ->setPictureUrl('https://placehold.it/300x300');
 

@@ -40,14 +40,6 @@ class Book
     private $author;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
-     * 
-     * @Assert\NotBlank(message="The book must a category.")
-     */
-    private $category;
-
-    /**
      * @ORM\Column(type="string")
      * @Groups({"list_book_read","list_book_add","list_book_add_response"})
      * 
@@ -69,12 +61,14 @@ class Book
     /**
      * @ORM\Column(type="string")
      * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
+     * @Assert\NotBlank(message="The book must have an API Code.")
      */
     private $apiCode;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
+     * @Assert\NotBlank(message="The music must have a picture url.")
      */
     private $pictureUrl;
 
@@ -108,18 +102,6 @@ class Book
     public function setAuthor(string $author): self
     {
         $this->author = $author;
-
-        return $this;
-    }
-
-    public function getCategory(): ?string
-    {
-        return $this->category;
-    }
-
-    public function setCategory(string $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }

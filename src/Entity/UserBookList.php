@@ -46,9 +46,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                                      "properties": {
  *                                      "title": {"type": "string"},
  *                                      "author": {"type": "string"},
- *                                      "category": {"type": "string"},
  *                                      "releasedAt": {"type": "string"},
  *                                      "apiCode": {"type": "string"},
+ *                                      "pictureUrl": {"type":"string"}
  *                                      }
  *                                   },
  *                              }
@@ -57,9 +57,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                              "book": {
  *                              "title": "The Alchemist",
  *                              "author": "Paulo Coelho",
- *                              "category": "religion",
  *                              "releasedAt": "2006",
- *                              "apiCode": "FzVjBgAAQBAJ"
+ *                              "apiCode": "FzVjBgAAQBAJ",
+ *                              "pictureUrl": "link"
  *                              }   
  *                          }
  *                       }

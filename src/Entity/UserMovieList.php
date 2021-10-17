@@ -45,10 +45,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                                      "type":"object",
  *                                      "properties": {
  *                                      "title": {"type": "string"},
- *                                      "realisator": {"type": "string"},
- *                                      "category": {"type": "string"},
  *                                      "releasedAt": {"type": "string"},
  *                                      "apiCode": {"type": "string"},
+ *                                      "pictureUrl": {"type":"string"}
  *                                      }
  *                                   },
  *                              }
@@ -56,10 +55,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                          "example": {
  *                              "movie": {
  *                              "title": "The Book of Eli",
- *                              "realisator": "Albert, Allen Hughes",
- *                              "category": "science fiction",
  *                              "releasedAt": "2010",
- *                              "apiCode": "tt1037705"
+ *                              "apiCode": "tt1037705",
+ *                              "pictureUrl": "link"
  *                              }   
  *                          }
  *                       }

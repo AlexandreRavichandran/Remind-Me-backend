@@ -37,18 +37,8 @@ class Music
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"list_music_read","list_music_add","list_music_add_response"})
-     * 
-     * @Assert\NotBlank(message="The music must have a category.")
-     */
-    private $category;
-
-    /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({"list_music_browse","user_browse","user_read","list_music_add","list_music_add_response"})
-     * 
-     * @Assert\NotBlank(message="The music must have a released date.")
      * @Assert\Regex(
      *          pattern="/\d{4}/",
      *          match="true",
@@ -84,8 +74,9 @@ class Music
     private $apiCode;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
+     * @ORM\Column(type="text")
+     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response"})
+     * @Assert\NotBlank(message="The music must have a picture url.")
      */
     private $pictureUrl;
 
@@ -107,18 +98,6 @@ class Music
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getCategory(): ?string
-    {
-        return $this->category;
-    }
-
-    public function setCategory(string $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }

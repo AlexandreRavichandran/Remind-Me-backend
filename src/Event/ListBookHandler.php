@@ -2,16 +2,17 @@
 
 namespace App\Event;
 
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\ViewEvent;
-use ApiPlatform\Core\EventListener\EventPriorities;
+use Exception;
 use App\Entity\UserBookList;
 use App\Repository\BookRepository;
-use App\Repository\UserBookListRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use App\Repository\UserBookListRepository;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use ApiPlatform\Core\EventListener\EventPriorities;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ListBookHandler implements EventSubscriberInterface
 {
@@ -49,6 +50,12 @@ class ListBookHandler implements EventSubscriberInterface
                 $this->em->persist($book);
             } else {
                 $datas->setBook($bookAlreadyInDB);
+            }
+
+            //check if user has already the movie on his list
+            $bookAlreadyInList = $this->userBookListRepository->searchByUserAndBook($user, $book);
+            if ($bookAlreadyInList) {
+                $event->setResponse(new JsonResponse(['message' => 'Vous avez déja ce livre dans votre liste'], 400));
             }
 
             //set the list order for the book currently added

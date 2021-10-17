@@ -32,22 +32,6 @@ class Movie
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"list_movie_read","list_movie_add","list_movie_add_response"})
-     * 
-     * @Assert\NotBlank(message="The movie's realisator can't be blank.")
-     */
-    private $realisator;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response"})
-     * 
-     * @Assert\NotBlank(message="The movie must have a category.")
-     */
-    private $category;
-
-    /**
      * @ORM\Column(type="string")
      * @Groups({"list_movie_read","list_movie_add","list_movie_add_response"})
      * 
@@ -67,12 +51,14 @@ class Movie
     /**
      * @ORM\Column(type="string")
      * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response"})
+     * @Assert\NotBlank(message="The movie must have an API Code.")
      */
     private $apiCode;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
+     * @ORM\Column(type="text")
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response"})
+     * @Assert\NotBlank(message="The music must have a picture url.")
      */
     private $pictureUrl;
 
@@ -94,30 +80,6 @@ class Movie
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getRealisator(): ?string
-    {
-        return $this->realisator;
-    }
-
-    public function setRealisator(string $realisator): self
-    {
-        $this->realisator = $realisator;
-
-        return $this;
-    }
-
-    public function getCategory(): ?string
-    {
-        return $this->category;
-    }
-
-    public function setCategory(string $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }

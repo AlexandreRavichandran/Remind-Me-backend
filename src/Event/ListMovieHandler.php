@@ -3,14 +3,15 @@
 namespace App\Event;
 
 use App\Entity\UserMovieList;
+use App\Repository\MovieRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserMovieListRepository;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use ApiPlatform\Core\EventListener\EventPriorities;
-use App\Repository\MovieRepository;
-use App\Repository\UserMovieListRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Security;
 
 class ListMovieHandler implements EventSubscriberInterface
 {
@@ -48,6 +49,12 @@ class ListMovieHandler implements EventSubscriberInterface
                 $this->em->persist($movie);
             } else {
                 $datas->setMovie($bookAlreadyInDB);
+            }
+
+            //check if user has already the movie on his list
+            $movieAlreadyInList = $this->userMovieListRepository->searchByUserAndMovie($user, $movie);
+            if ($movieAlreadyInList) {
+                $event->setResponse(new JsonResponse(['message' => 'Vous avez déja ce film dans votre liste'], 400));
             }
 
             //set the list order for the movie currently added

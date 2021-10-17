@@ -2,7 +2,6 @@
 
 namespace App\Event;
 
-use App\Entity\UserMovieList;
 use App\Entity\UserMusicList;
 use App\Repository\MusicRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +11,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ListMusicHandler implements EventSubscriberInterface
 {
@@ -41,7 +41,7 @@ class ListMusicHandler implements EventSubscriberInterface
 
             $music = $datas->getMusic();
             $user = $this->security->getUser();
-            
+
             //If the music is not already on the database, add it  
             $musicAlreadyInDB = $this->musicRepository->findByApiCode($music->getApiCode());
             if (!$musicAlreadyInDB) {
@@ -49,12 +49,18 @@ class ListMusicHandler implements EventSubscriberInterface
             } else {
                 $datas->setMusic($musicAlreadyInDB);
             }
-            
+
+            //check if user has already the music on his list
+            $musicAlreadyInList = $this->userMusicListRepository->searchByUserAndMusic($user, $music);
+            if ($musicAlreadyInList) {
+                $event->setResponse(new JsonResponse(['message' => 'Vous avez déja cette musique dans votre liste'], 400));
+            }
+
             //set the list order for the music currently added
             $currentUserMusicsInList = $this->userMusicListRepository->searchByUser($user, $music);
             $listOrder = count($currentUserMusicsInList) + 1;
             $datas->setListOrder($listOrder);
-            
+
             $datas->setUser($user);
             $datas->setUser($this->security->getUser());
         }
