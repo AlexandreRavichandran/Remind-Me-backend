@@ -30,7 +30,10 @@ class ListMusicHandler implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => ["MusicChecker", EventPriorities::PRE_VALIDATE]
+            KernelEvents::VIEW => [
+                ['musicChecker', EventPriorities::PRE_VALIDATE],
+                ['resetListOrder', EventPriorities::POST_WRITE]
+            ]
         ];
     }
 
@@ -62,7 +65,22 @@ class ListMusicHandler implements EventSubscriberInterface
             $datas->setListOrder($listOrder);
 
             $datas->setUser($user);
-            $datas->setUser($this->security->getUser());
+        }
+    }
+
+    public function resetListOrder(ViewEvent $event)
+    {
+        $datas = $event->getRequest()->attributes->get('data');
+        if ($datas instanceof UserMusicList && $event->getRequest()->isMethod('DELETE')) {
+            $user  = $this->security->getUser();
+            $currentUserMusicsInList =  $this->userMusicListRepository->searchByUser($user);
+            $i = 1;
+            foreach ($currentUserMusicsInList as $music) {
+                $music->setListOrder($i);
+                $this->em->persist($music);
+                $i++;
+            }
+            $this->em->flush();
         }
     }
 }

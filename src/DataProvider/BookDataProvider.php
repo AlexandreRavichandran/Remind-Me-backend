@@ -35,7 +35,7 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
                     ->setId($bookData['id'])
                     ->setApiCode($bookData['id'])
                     ->setTitle($bookData['volumeInfo']['title'])
-                    ->setReleasedAt($bookData['volumeInfo']['publishedDate'])
+                    ->setReleasedAt(substr($bookData['volumeInfo']['publishedDate'], 0, 4))
                     ->setAuthor(join(', ', $bookData['volumeInfo']['authors']));
                 if (isset($bookData['volumeInfo']['description'])) {
                     $book->setSynopsis($bookData['volumeInfo']['description']);

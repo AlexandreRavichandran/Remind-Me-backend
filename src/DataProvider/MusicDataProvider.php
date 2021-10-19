@@ -76,7 +76,7 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
                     $music
                         ->setArtist($response['artist']['name'])
                         ->setTitle($response['title'])
-                        ->setReleasedAt($response['release_date'])
+                        ->setReleasedAt(substr($response['release_date'], 0, 4))
                         ->setApiCode($response['id'])
                         ->setCategory($response['genres']['data'][0]['name'])
                         ->setPictureUrl($response['cover_xl'])
@@ -97,7 +97,7 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
                     $music
                         ->setArtist($response['artist']['name'])
                         ->setTitle($response['title'])
-                        ->setReleasedAt($response['release_date'])
+                        ->setReleasedAt(substr($response['release_date'], 0, 4))
                         ->setApiCode($response['id'])
                         ->setPreviewUrl($response['preview'])
                         ->setPictureUrl($response['album']['cover_xl'])

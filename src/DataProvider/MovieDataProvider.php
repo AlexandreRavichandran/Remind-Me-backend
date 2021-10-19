@@ -40,8 +40,10 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
                     ->setCoverUrl($movieData['Poster']);
                 $datas[] = $movie;
             }
+            return $datas;
+        } else {
+            return new JsonResponse([], 404);
         }
-        return $datas;
     }
 
     public function getItem(string $resourceClass, $id, ?string $operationName = null, array $context = [])
@@ -60,6 +62,8 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
                 ->setActors($response['Actors']);
 
             return $movie;
+        } else {
+            return new JsonResponse([], 404);
         }
     }
 

@@ -25,7 +25,7 @@ class Book
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response","list_book_update_response"})
      * 
      * @Assert\NotBlank(message="The book's title can't be blank.")
      */
@@ -33,7 +33,7 @@ class Book
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_book_read","list_book_add","list_book_add_response"})
+     * @Groups({"list_book_browse",     "list_book_read","list_book_add","list_book_add_response","list_book_update_response"})
      * 
      * @Assert\NotBlank(message="The book's author can't be blank.")
      */
@@ -41,7 +41,7 @@ class Book
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"list_book_read","list_book_add","list_book_add_response"})
+     * @Groups({"list_book_browse","list_book_read","list_book_add","list_book_add_response","list_book_update_response"})
      * 
      * @Assert\NotBlank(message="The book must have a released date.")
      * @Assert\Regex(
@@ -60,14 +60,14 @@ class Book
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response","list_book_update_response"})
      * @Assert\NotBlank(message="The book must have an API Code.")
      */
     private $apiCode;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response"})
+     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response","list_book_update_response"})
      * @Assert\NotBlank(message="The music must have a picture url.")
      */
     private $pictureUrl;

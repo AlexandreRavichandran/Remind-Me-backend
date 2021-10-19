@@ -31,9 +31,12 @@ class ListMovieHandler implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => ['movieChecker', EventPriorities::PRE_VALIDATE]
+            KernelEvents::VIEW => [
+                ['movieChecker', EventPriorities::PRE_VALIDATE],
+                ['resetListOrder', EventPriorities::POST_WRITE]
+            ]
         ];
-    }
+    } 
 
     public function movieChecker(ViewEvent $event)
     {
@@ -65,4 +68,20 @@ class ListMovieHandler implements EventSubscriberInterface
             $datas->setUser($user);
         }
     }
+
+    public function resetListOrder(ViewEvent $event)
+    {
+        $datas = $event->getRequest()->attributes->get('data');
+        if ($datas instanceof UserMovieList && $event->getRequest()->isMethod('DELETE')) {
+            $user  = $this->security->getUser();
+            $currentUserMoviesInList =  $this->userMovieListRepository->searchByUser($user);
+            $i = 1;
+            foreach ($currentUserMoviesInList as $movie) {
+                $movie->setListOrder($i);
+                $this->em->persist($movie);
+                $i++;
+            }
+            $this->em->flush();
+        }
+    } 
 }

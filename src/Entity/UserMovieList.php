@@ -84,6 +84,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "denormalization_context": {
  *              "groups": {"list_movie_update"}
  *              },
+ *          "normalization_context":{
+ *              "groups": {"list_movie_update_response"}
+ *          },
  *          "openapi_context": {
  *              "summary": "Change order of the movie on the connected user's movie list",
  *              "description": "Change order of the movie on the connected user's movie list",
@@ -107,19 +110,20 @@ class UserMovieList
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"list_movie_browse"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"list_movie_browse","list_movie_read","list_movie_update","list_movie_add_response"})
+     * @Groups({"list_movie_browse","list_movie_read","list_movie_update","list_movie_add_response","list_movie_update_response"})
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Movie::class, inversedBy="userMovieLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response"})
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response","list_movie_update_response"})
      * @Assert\NotBlank(message="You must add movie datas")
      * @Assert\Valid
      */

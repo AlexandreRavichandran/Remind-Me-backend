@@ -32,7 +32,10 @@ class ListBookHandler implements EventSubscriberInterface
     {
 
         return [
-            KernelEvents::VIEW => ['bookChecker', EventPriorities::PRE_VALIDATE]
+            KernelEvents::VIEW => [
+                ['bookChecker', EventPriorities::PRE_VALIDATE],
+                ['resetListOrder', EventPriorities::POST_WRITE]
+            ]
         ];
     }
 
@@ -64,6 +67,22 @@ class ListBookHandler implements EventSubscriberInterface
             $datas->setListOrder($listOrder);
 
             $datas->setUser($user);
+        }
+    }
+
+    public function resetListOrder(ViewEvent $event)
+    {
+        $datas = $event->getRequest()->attributes->get('data');
+        if ($datas instanceof UserBookList && $event->getRequest()->isMethod('DELETE')) {
+            $user  = $this->security->getUser();
+            $currentUserBooksInList =  $this->userBookListRepository->searchByUser($user);
+            $i = 1;
+            foreach ($currentUserBooksInList as $book) {
+                $book->setListOrder($i);
+                $this->em->persist($book);
+                $i++;
+            }
+            $this->em->flush();
         }
     }
 }

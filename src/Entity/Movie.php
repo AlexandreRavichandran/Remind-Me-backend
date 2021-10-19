@@ -25,7 +25,7 @@ class Movie
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response"})
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response","list_movie_update_response"})
      * 
      * @Assert\NotBlank(message="The movie's title can't be blank.")
      */
@@ -33,7 +33,7 @@ class Movie
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"list_movie_read","list_movie_add","list_movie_add_response"})
+     * @Groups({"list_movie_browse","list_movie_read","list_movie_add","list_movie_add_response","list_movie_update_response"})
      * 
      * @Assert\NotBlank(message="The movie must have a released date.")
      * @Assert\Regex(
@@ -41,8 +41,8 @@ class Movie
      *          match="false",
      *          message="The release date must be like YYYY"
      *          )
-     */   
-     private $releasedAt;
+     */
+    private $releasedAt;
     /**
      * @ORM\OneToMany(targetEntity=UserMovieList::class, mappedBy="movie")
      */
@@ -50,14 +50,14 @@ class Movie
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response"})
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response","list_movie_update_response"})
      * @Assert\NotBlank(message="The movie must have an API Code.")
      */
     private $apiCode;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response"})
+     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response","list_movie_update_response"})
      * @Assert\NotBlank(message="The music must have a picture url.")
      */
     private $pictureUrl;
@@ -76,7 +76,7 @@ class Movie
     {
         return $this->title;
     }
-    
+
     public function setTitle(string $title): self
     {
         $this->title = $title;
