@@ -29,58 +29,58 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
 
-        $musicTypes = ['Album', 'Song', 'Artist'];
+        // $musicTypes = ['Album', 'Song', 'Artist'];
 
-        $movies = [];
-        $musics = [];
-        $books = [];
+        // $movies = [];
+        // $musics = [];
+        // $books = [];
 
-        //Creating movies
-        for ($i = 0; $i < 10; $i++) {
+        // //Creating movies
+        // for ($i = 0; $i < 10; $i++) {
 
-            $movie = new Movie();
-            $movie
-                ->setApiCode(mt_rand(10000, 99999))
-                ->setTitle($faker->word())
-                ->setReleasedAt($faker->date('Y'))
-                ->setPictureUrl('https://placehold.it/300x300');
+        //     $movie = new Movie();
+        //     $movie
+        //         ->setApiCode(mt_rand(10000, 99999))
+        //         ->setTitle($faker->word())
+        //         ->setReleasedAt($faker->date('Y'))
+        //         ->setPictureUrl('https://placehold.it/300x300');
 
-            $movies[] = $movie;
-            $manager->persist($movie);
-        }
+        //     $movies[] = $movie;
+        //     $manager->persist($movie);
+        // }
 
-        //Creating musics
-        for ($i = 0; $i < 10; $i++) {
+        // //Creating musics
+        // for ($i = 0; $i < 10; $i++) {
 
-            $music = new Music();
-            $music
-                ->setApiCode(mt_rand(10000, 99999))
-                ->setType($faker->randomElement($musicTypes))
-                ->setTitle($faker->word())
-                ->setReleasedAt($faker->date('d m Y'))
-                ->setPictureUrl('https://placehold.it/300x300');
-            if ($music->getType() === 'Artist') {
-                $music->setArtist($faker->firstName . ' ' . $faker->lastName);
-            }
+        //     $music = new Music();
+        //     $music
+        //         ->setApiCode(mt_rand(10000, 99999))
+        //         ->setType($faker->randomElement($musicTypes))
+        //         ->setTitle($faker->word())
+        //         ->setReleasedAt($faker->date('d m Y'))
+        //         ->setPictureUrl('https://placehold.it/300x300');
+        //     if ($music->getType() === 'Artist') {
+        //         $music->setArtist($faker->firstName . ' ' . $faker->lastName);
+        //     }
 
-            $musics[] = $music;
-            $manager->persist($music);
-        }
+        //     $musics[] = $music;
+        //     $manager->persist($music);
+        // }
 
-        //Creating books
-        for ($i = 0; $i < 10; $i++) {
+        // //Creating books
+        // for ($i = 0; $i < 10; $i++) {
 
-            $book = new Book();
-            $book
-                ->setApiCode(mt_rand(10000, 99999))
-                ->setTitle($faker->word())
-                ->setAuthor($faker->firstName . ' ' . $faker->lastName)
-                ->setReleasedAt($faker->date('d m Y'))
-                ->setPictureUrl('https://placehold.it/300x300');
+        //     $book = new Book();
+        //     $book
+        //         ->setApiCode(mt_rand(10000, 99999))
+        //         ->setTitle($faker->word())
+        //         ->setAuthor($faker->firstName . ' ' . $faker->lastName)
+        //         ->setReleasedAt($faker->date('d m Y'))
+        //         ->setPictureUrl('https://placehold.it/300x300');
 
-            $books[] = $book;
-            $manager->persist($book);
-        }
+        //     $books[] = $book;
+        //     $manager->persist($book);
+        // }
 
         //Creating users
         for ($i = 0; $i < 5; $i++) {
@@ -91,38 +91,38 @@ class AppFixtures extends Fixture
                 ->setEmail($faker->email)
                 ->setPassword($this->passwordEncoder->hashPassword($user, 'demo'));
 
-            //Creating UserMovieLists
-            for ($j = 1; $j < mt_rand(2, 6); $j++) {
+            // //Creating UserMovieLists
+            // for ($j = 1; $j < mt_rand(2, 6); $j++) {
 
-                $userMovieList = new UserMovieList();
-                $userMovieList
-                    ->setMovie($faker->randomElement($movies))
-                    ->setListOrder($j);
-                $manager->persist($userMovieList);
-                $user->addMovieList($userMovieList);
-            }
+            //     $userMovieList = new UserMovieList();
+            //     $userMovieList
+            //         ->setMovie($faker->randomElement($movies))
+            //         ->setListOrder($j);
+            //     $manager->persist($userMovieList);
+            //     $user->addMovieList($userMovieList);
+            // }
 
-            //Creating UserMusicLists
-            for ($j = 1; $j < mt_rand(2, 6); $j++) {
+            // //Creating UserMusicLists
+            // for ($j = 1; $j < mt_rand(2, 6); $j++) {
 
-                $userMusicList = new UserMusicList();
-                $userMusicList
-                    ->setMusic($faker->randomElement($musics))
-                    ->setListOrder($j);
-                $manager->persist($userMusicList);
-                $user->addMusicList($userMusicList);
-            }
+            //     $userMusicList = new UserMusicList();
+            //     $userMusicList
+            //         ->setMusic($faker->randomElement($musics))
+            //         ->setListOrder($j);
+            //     $manager->persist($userMusicList);
+            //     $user->addMusicList($userMusicList);
+            // }
 
-            //Creating UserBookLists
-            for ($j = 1; $j < mt_rand(2, 6); $j++) {
+            // //Creating UserBookLists
+            // for ($j = 1; $j < mt_rand(2, 6); $j++) {
 
-                $userBookList = new UserBookList();
-                $userBookList
-                    ->setBook($faker->randomElement($books))
-                    ->setListOrder($j);
-                $manager->persist($userBookList);
-                $user->addBookList($userBookList);
-            }
+            //     $userBookList = new UserBookList();
+            //     $userBookList
+            //         ->setBook($faker->randomElement($books))
+            //         ->setListOrder($j);
+            //     $manager->persist($userBookList);
+            //     $user->addBookList($userBookList);
+            // }
             $manager->persist($user);
         }
 

@@ -57,7 +57,6 @@ class Music
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response","list_music_update_response"})
-     * @Assert\NotBlank(message="The music must have an artist.")
      */
     private $artist;
 
