@@ -9,7 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @ApiResource(
  *      collectionOperations={
  *        "GET": {
- *          "path": "/musics/songs",
+ *          "path": "/api/musics/songs",
  *          "openapi_context": {
  *              "summary": "Get music datas following research parameters (type and query)",
  *              "description": "Get music datas following the type of music document and the search query.There is three types of music document: album, artist, and song",
@@ -28,7 +28,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *  },
  *      itemOperations={
  *        "GET": {
- *          "path": "/musics/songs/{apiCode}",
+ *          "path": "/api/musics/songs/{apiCode}",
  *          "openapi_context": {
  *              "summary": "Get a music datas by his api code (Itunes api_code)",
  *              "description": "Get a music datas by his api code. The api code must be from Itunes API",

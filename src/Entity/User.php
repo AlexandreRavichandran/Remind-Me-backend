@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  * @ApiResource(
  *  collectionOperations={
  *      "GET": {
- *         "path":"/users",
+ *         "path":"/api/users",
  *          "normalization_context": {
  *              "groups": {"user_browse","user_add"}
  *          },
@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  *          }
  *       },
  *      "POST": {
- *         "path":"/users",
+ *         "path":"/api/users",
  *         "denormalization_context": {
  *              "groups": {"user_add"} 
  *         },
@@ -42,7 +42,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
  *     },
  *  itemOperations={
  *      "GET": {
- *          "path":"/users/{id}",
+ *          "path":"/api/users/{id}",
  *          "requirements": {"id": "\d+"},
  *          "normalization_context":{
  *              "groups": {"user_read"}

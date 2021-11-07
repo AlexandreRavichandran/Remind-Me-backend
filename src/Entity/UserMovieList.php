@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *  },
  *  collectionOperations={
  *      "GET": {
- *         "path":"/list/movies",
+ *         "path":"/api/list/movies",
  *          "normalization_context": {
  *              "groups": {"list_movie_browse"}
  *          },
@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }         
  *       },
  *       "POST": {
- *         "path":"/list/movies",
+ *         "path":"/api/list/movies",
  *          "denormalization_context": {
  *              "groups": {"list_movie_add"}
  *          },
@@ -68,7 +68,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *  itemOperations={
  *      "GET": {
- *          "path":"/list/movies/{id}",
+ *          "path":"/api/list/movies/{id}",
  *          "requirements": {"id": "\d+"},
  *          "normalization_context":{
  *              "groups": {"list_movie_read"}
@@ -79,7 +79,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *       },
  *      "PATCH": {
- *          "path":"/list/movies/{id}",
+ *          "path":"/api/list/movies/{id}",
  *          "requirements": {"id": "\d+"},
  *          "denormalization_context": {
  *              "groups": {"list_movie_update"}
@@ -93,7 +93,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *       },
  *      "DELETE": {
- *          "path":"/list/movies/{id}",
+ *          "path":"/api/list/movies/{id}",
  *          "requirements": {"id": "\d+"}, 
  *          "openapi_context": {
  *              "summary": "Delete a movie of the connected user's list",

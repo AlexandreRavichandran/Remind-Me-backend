@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *  },
  *  collectionOperations={
  *      "GET": {
- *         "path":"/list/musics",
+ *         "path":"/api/list/musics",
  *          "normalization_context": {
  *              "groups": {"list_music_browse"}
  *          },
@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *       },
  *       "POST": {
- *         "path": "/list/musics",
+ *         "path": "/api/list/musics",
  *          "denormalization_context": {
  *              "groups": {"list_music_add"},
  *              "disable_type_enforcement"=true
@@ -76,7 +76,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *  itemOperations={
  *      "GET": {
- *          "path":"/list/musics/{id}",
+ *          "path":"/api/list/musics/{id}",
  *          "requirements": {"id": "\d+"},
  *          "normalization_context":{
  *              "groups": {"list_music_read"}
@@ -87,7 +87,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *       },
  *      "PATCH": {
- *          "path":"/list/musics/{id}",
+ *          "path":"/api/list/musics/{id}",
  *          "requirements": {"id": "\d+"},
  *          "denormalization_context": {
  *              "groups": {"list_music_update"}
@@ -101,7 +101,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *       },
  *      "DELETE": {
- *          "path":"/list/musics/{id}",
+ *          "path":"/api/list/musics/{id}",
  *          "requirements": {"id": "\d+"},
  *          "openapi_context": {
  *              "summary": "Delete a music of the connected user's list",

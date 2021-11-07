@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *  },
  *  collectionOperations={
  *      "GET": {
- *         "path": "/list/books",
+ *         "path": "/api/list/books",
  *          "normalization_context": {
  *              "groups": {"list_book_browse"}
  *          },
@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }          
  *       },
  *       "POST": {
- *         "path": "/list/books",
+ *         "path": "/api/list/books",
  *          "denormalization_context": {
  *              "groups": {"list_book_add"}
  *          },
@@ -70,7 +70,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *   },
  *  itemOperations={
  *      "GET": {
- *          "path":"/list/books/{id}",
+ *          "path":"/api/list/books/{id}",
  *          "requirements": {"id": "\d+"},
  *          "normalization_context":{
  *              "groups": {"list_book_read"}
@@ -81,7 +81,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *       },
  *      "PATCH": {
- *          "path":"/list/books/{id}",
+ *          "path":"/api/list/books/{id}",
  *          "requirements": {"id": "\d+"},
  *          "denormalization_context": {
  *              "groups": {"list_book_update"}
@@ -95,7 +95,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *          },
  *      "DELETE": {
- *          "path":"/list/books/{id}",
+ *          "path":"/api/list/books/{id}",
  *          "requirements": {"id": "\d+"},
  *          "openapi_context": {
  *              "summary": "Delete a book of the connected user's list",

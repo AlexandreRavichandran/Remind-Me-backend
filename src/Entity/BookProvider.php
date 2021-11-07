@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ApiResource(
  *      collectionOperations={
  *        "GET": {
- *          "path": "/books",
+ *          "path": "/api/books",
  *          "openapi_context": {
  *              "summary": "Get books datas following research parameters",
  *              "description": "Get book datas following the search query. A query parameter must be added to this endpoint. This query can be a book's title, author or category",
@@ -29,7 +29,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *      },
  *      itemOperations={
  *        "GET": {
- *          "path": "/books/{apiCode}",
+ *          "path": "/api/books/{apiCode}",
  *          "openapi_context": {
  *              "summary": "Get a book datas by his api code (Google Books api_code)",
  *              "description": "Get a book by his api code. The api code must be from Google Book API",

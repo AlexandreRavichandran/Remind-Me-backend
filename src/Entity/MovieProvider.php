@@ -9,7 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @ApiResource(
  *      collectionOperations={
  *        "GET": {
- *          "path": "/movies",
+ *          "path": "/api/movies",
  *          "openapi_context": {
  *              "summary": "Get movie datas following research parameters",
  *              "description": "Get movie datas following the search query. A query parameter must be added to this endpoint. This query can be a movie's title, realisator or category",
@@ -28,7 +28,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *  },
  *      itemOperations={
  *        "GET": {
- *          "path": "/movies/{apiCode}",
+ *          "path": "/api/movies/{apiCode}",
  *          "openapi_context": {
  *              "summary": "Get a movie datas by his api code (OMDB api_code)",
  *              "description": "Get a movie datas by his api code. The api code must be from OMDB API",
