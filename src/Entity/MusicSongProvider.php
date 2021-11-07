@@ -30,8 +30,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *        "GET": {
  *          "path": "/api/musics/songs/{apiCode}",
  *          "openapi_context": {
- *              "summary": "Get a music datas by his api code (Itunes api_code)",
- *              "description": "Get a music datas by his api code. The api code must be from Itunes API",
+ *              "summary": "Get a music datas by his api code (Deezer api_code)",
+ *              "description": "Get a music datas by his api code. The api code must be from Deezer API",
  *           },  
  *      }
  *  }
