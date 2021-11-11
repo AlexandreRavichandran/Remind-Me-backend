@@ -6,11 +6,12 @@ use Exception;
 use App\Entity\MusicSongProvider;
 use App\Entity\MusicAlbumProvider;
 use App\Entity\MusicArtistProvider;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface, ItemDataProviderInterface
 {
@@ -30,7 +31,12 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
 
     public function getCollection(string $resourceClass, ?string $operationName = null, array $context = [])
     {
-        $query = $context['filters']['q'];
+        try {
+            $query = $context['filters']['q'];
+        } catch (\Throwable $th) {
+            return new JsonResponse(['message' => 'You must add a query "q" on your request'], Response::HTTP_BAD_REQUEST);
+        }
+
         switch ($resourceClass) {
             case 'App\Entity\MusicAlbumProvider':
                 $addEntity = 'album:';
