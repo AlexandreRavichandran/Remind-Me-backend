@@ -10,18 +10,18 @@ class MusicProviderTest extends ApiTestCase
     {
         $response = static::createClient()->request('GET', '/api/musics/albums?q=temps mort');
         $this->assertResponseIsSuccessful();
-        $this->assertResponseStatusCodeSame('200');
+        $this->assertResponseStatusCodeSame(200);
 
         $response = static::createClient()->request('GET', '/api/musics/songs?q=temps mort');
         $this->assertResponseIsSuccessful();
-        $this->assertResponseStatusCodeSame('200');
+        $this->assertResponseStatusCodeSame(200);
     }
 
     public function testGetItem(): void
     {
         $response = static::createClient()->request('GET', '/api/musics/albums/73913112');
         $this->assertResponseIsSuccessful();
-        $this->assertResponseStatusCodeSame('200');
+        $this->assertResponseStatusCodeSame(200);
         $this->assertJsonContains([
             "artist" => "Booba",
             "apiCode" => 73913112,
@@ -31,7 +31,7 @@ class MusicProviderTest extends ApiTestCase
 
         $response = static::createClient()->request('GET', '/api/musics/songs/558787752');
         $this->assertResponseIsSuccessful();
-        $this->assertResponseStatusCodeSame('200');
+        $this->assertResponseStatusCodeSame(200);
         $this->assertJsonContains([
             "apiCode" => 558787752,
             "title" => "Ecoute bien",
@@ -45,9 +45,18 @@ class MusicProviderTest extends ApiTestCase
     public function testNotFound(): void
     {
         $response = static::createClient()->request('GET', '/api/musics/albums/test');
-        $this->assertResponseStatusCodeSame('404');
+        $this->assertResponseStatusCodeSame(404);
 
         $response = static::createClient()->request('GET', '/api/musics/songs/test');
-        $this->assertResponseStatusCodeSame('404');
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testBadRequest(): void
+    {
+        $response = static::createClient()->request('GET', '/api/musics/albums');
+        $this->assertResponseStatusCodeSame(400);
+
+        $response = static::createClient()->request('GET', '/api/musics/songs');
+        $this->assertResponseStatusCodeSame(400);
     }
 }
