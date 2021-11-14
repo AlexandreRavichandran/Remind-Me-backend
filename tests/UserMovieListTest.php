@@ -3,8 +3,9 @@
 namespace App\Tests;
 
 use App\Repository\UserRepository;
-use App\Repository\MovieRepository;
+use App\Repository\UserMovieListRepository;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use App\Repository\MovieRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 class UserMovieListTest extends ApiTestCase
@@ -17,7 +18,7 @@ class UserMovieListTest extends ApiTestCase
                 'Authorization' => 'Bearer ' . $token
             ]
         ]);
-        $this->assertResponseIsSuccessful(200);
+        $this->assertResponseIsSuccessful();
     }
 
     public function testAddToList(): void
@@ -26,7 +27,7 @@ class UserMovieListTest extends ApiTestCase
         $response = static::createClient()->request('POST', '/api/list/movies', [
             'json' => [
                 'movie' => [
-                    'apiCode' => '1437135238',
+                    'apiCode' => 'tt1037705',
                 ]
             ],
             'headers' => [
@@ -39,20 +40,14 @@ class UserMovieListTest extends ApiTestCase
 
     public function testDeleteToList(): void
     {
+        $userRepository = $this->getContainer()->get(UserRepository::class);
+        $user = $userRepository->find(1);
         $token = $this->login();
-        $response = static::createClient()->request('POST', '/api/list/movies', [
-            'json' => [
-                'movie' => [
-                    'apiCode' => '1437135238',
-                ]
-            ],
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token
-            ]
-        ]);
         $movieRepository = $this->getContainer()->get(MovieRepository::class);
-        $movieToDelete = $movieRepository->findByApiCode(1437135238);
-        $response = static::createClient()->request('DELETE', '/api/list/movies/' . $movieToDelete->getId(), [
+        $movieListRepository = $this->getContainer()->get(UserMovieListRepository::class);
+        $movie = $movieRepository->findByApiCode('tt1037705');
+        $movieListToDelete = $movieListRepository->searchByUserAndMovie($user, $movie);
+        $response = static::createClient()->request('DELETE', '/api/list/movies/' . $movieListToDelete->getId(), [
             'headers' => [
                 'Authorization' => 'Bearer ' . $token
             ]
@@ -90,7 +85,7 @@ class UserMovieListTest extends ApiTestCase
             ],
             'json' => [
                 'movie' => [
-                    'apiCode' => 1
+                    'apiCode' => '1'
                 ]
             ]
         ]);
@@ -114,9 +109,8 @@ class UserMovieListTest extends ApiTestCase
     {
         $userRepository = $this->getContainer()->get(UserRepository::class);
         $tokenInterface = $this->getContainer()->get(JWTTokenManagerInterface::class);
-        $users = $userRepository->findAll();
-        $randomUser = $users[array_rand($users)];
-        $token = $tokenInterface->create($randomUser);
+        $user = $userRepository->find(1);
+        $token = $tokenInterface->create($user);
         return $token;
     }
 }

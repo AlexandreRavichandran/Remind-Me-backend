@@ -47,24 +47,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                                  "music": {
  *                                      "type":"object",
  *                                      "properties": {
- *                                      "title": {"type": "string"},
- *                                      "releasedAt": {"type": "string"},
  *                                      "type": {"type": "string"},
- *                                      "artist": {"type": "string"},
- *                                      "apiCode": {"type": "string"},
- *                                      "pictureUrl": {"type": "string"},
+ *                                      "apiCode": {"type": "string"}
  *                                      }
  *                                   },
  *                              }
  *                          },
  *                          "example": {
  *                              "music": {
- *                              "title": "Temps mort",
- *                              "releasedAt": "2002",
  *                              "type": "Album",
- *                              "artist": "Booba",
- *                              "apiCode": "1437135238",
- *                              "pictureUrl": "link"
+ *                              "apiCode": "1437135238"
  *                              }   
  *                          }
  *                       }

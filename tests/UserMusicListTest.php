@@ -3,8 +3,9 @@
 namespace App\Tests;
 
 use App\Repository\UserRepository;
-use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Repository\MusicRepository;
+use App\Repository\UserMusicListRepository;
+use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 class UserMusicListTest extends ApiTestCase
@@ -26,7 +27,8 @@ class UserMusicListTest extends ApiTestCase
         $response = static::createClient()->request('POST', '/api/list/musics', [
             'json' => [
                 'music' => [
-                    'apiCode' => '1437135238',
+                    'apiCode' => '73913112',
+                    'type'=>'Album'
                 ]
             ],
             'headers' => [
@@ -39,20 +41,14 @@ class UserMusicListTest extends ApiTestCase
 
     public function testDeleteToList(): void
     {
+        $userRepository = $this->getContainer()->get(UserRepository::class);
+        $user = $userRepository->find(1);
         $token = $this->login();
-        $response = static::createClient()->request('POST', '/api/list/musics', [
-            'json' => [
-                'music' => [
-                    'apiCode' => '1437135238',
-                ]
-            ],
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token
-            ]
-        ]);
         $musicRepository = $this->getContainer()->get(MusicRepository::class);
-        $musicToDelete = $musicRepository->findByApiCode(1437135238);
-        $response = static::createClient()->request('DELETE', '/api/list/musics/' . $musicToDelete->getId(), [
+        $musicListRepository = $this->getContainer()->get(UserMusicListRepository::class);
+        $music = $musicRepository->findByApiCode('73913112');
+        $musicListToDelete = $musicListRepository->searchByUserAndMusic($user, $music);
+        $response = static::createClient()->request('DELETE', '/api/list/musics/' . $musicListToDelete->getId(), [
             'headers' => [
                 'Authorization' => 'Bearer ' . $token
             ]
@@ -90,8 +86,9 @@ class UserMusicListTest extends ApiTestCase
                 'Authorization' => 'Bearer ' . $token
             ],
             'json' => [
-                'musics' => [
-                    'apiCode' => 1
+                'music' => [
+                    'apiCode' => '1',
+                    'type'=>'Album'
                 ]
             ]
         ]);
@@ -115,9 +112,8 @@ class UserMusicListTest extends ApiTestCase
     {
         $userRepository = $this->getContainer()->get(UserRepository::class);
         $tokenInterface = $this->getContainer()->get(JWTTokenManagerInterface::class);
-        $users = $userRepository->findAll();
-        $randomUser = $users[array_rand($users)];
-        $token = $tokenInterface->create($randomUser);
+        $user = $userRepository->find(1);
+        $token = $tokenInterface->create($user);
         return $token;
     }
 }

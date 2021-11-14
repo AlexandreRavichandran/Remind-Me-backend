@@ -3,6 +3,7 @@
 namespace App\DataProvider;
 
 use App\Entity\MovieProvider;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
@@ -27,7 +28,12 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
 
     public function getCollection(string $resourceClass, ?string $operationName = null, array $context = [])
     {
-        $query = $context['filters']['q'];
+        try {
+            $query = $context['filters']['q'];
+        } catch (\Throwable $th) {
+            return new JsonResponse(['message' => 'You must add a query "q" on your request'], Response::HTTP_BAD_REQUEST);
+        }
+
         $response = $this->executeApiRequest($query, true);
         if ($response['Response'] === "True") {
             $datas = [];

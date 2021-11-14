@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use App\Repository\BookRepository;
 use App\Repository\UserRepository;
+use App\Repository\UserBookListRepository;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
@@ -30,7 +31,7 @@ class UserBookListTest extends ApiTestCase
             ],
             'json' => [
                 'book' => [
-                    'apiCode' => 'EZtWvgAACAAJ'
+                    'apiCode' => 'FzVjBgAAQBAJ'
                 ]
             ]
         ]);
@@ -40,20 +41,14 @@ class UserBookListTest extends ApiTestCase
 
     public function testDeleteToList(): void
     {
+        $userRepository = $this->getContainer()->get(UserRepository::class);
+        $user = $userRepository->find(1);
         $token = $this->login();
-        $response = static::createClient()->request('POST', '/api/list/books', [
-            'json' => [
-                'book' => [
-                    'apiCode' => '1437135238',
-                ]
-            ],
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token
-            ]
-        ]);
         $bookRepository = $this->getContainer()->get(BookRepository::class);
-        $bookToDelete = $bookRepository->findByApiCode(1437135238);
-        $response = static::createClient()->request('DELETE', '/api/list/books/' . $bookToDelete->getId(), [
+        $bookListRepository = $this->getContainer()->get(UserBookListRepository::class);
+        $book = $bookRepository->findByApiCode('FzVjBgAAQBAJ');
+        $bookListToDelete = $bookListRepository->searchByUserAndBook($user, $book);
+        $response = static::createClient()->request('DELETE', '/api/list/books/' . $bookListToDelete->getId(), [
             'headers' => [
                 'Authorization' => 'Bearer ' . $token
             ]
@@ -70,10 +65,12 @@ class UserBookListTest extends ApiTestCase
                 'Authorization' => 'Bearer ' . $token
             ],
             'json' => [
-                'test' => 'test'
+                'book'=>[
+                    'test' => 'test'
+                ]
             ]
         ]);
-        $this->assertResponseStatusCodeSame(422);
+        $this->assertResponseStatusCodeSame(400);
     }
 
     public function testUnauthorized(): void
@@ -91,7 +88,7 @@ class UserBookListTest extends ApiTestCase
             ],
             'json' => [
                 'book' => [
-                    'apiCode' => 1
+                    'apiCode' => '1'
                 ]
             ]
         ]);
@@ -115,9 +112,8 @@ class UserBookListTest extends ApiTestCase
     {
         $userRepository = $this->getContainer()->get(UserRepository::class);
         $tokenInterface = $this->getContainer()->get(JWTTokenManagerInterface::class);
-        $users = $userRepository->findAll();
-        $randomUser = $users[array_rand($users)];
-        $token = $tokenInterface->create($randomUser);
+        $user = $userRepository->find(1);
+        $token = $tokenInterface->create($user);
         return $token;
     }
 }

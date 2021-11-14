@@ -44,20 +44,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                                  "movie": {
  *                                      "type":"object",
  *                                      "properties": {
- *                                      "title": {"type": "string"},
- *                                      "releasedAt": {"type": "string"},
- *                                      "apiCode": {"type": "string"},
- *                                      "pictureUrl": {"type":"string"}
+ *                                      "apiCode": {"type": "string"}
  *                                      }
  *                                   },
  *                              }
  *                          },
  *                          "example": {
  *                              "movie": {
- *                              "title": "The Book of Eli",
- *                              "releasedAt": "2010",
  *                              "apiCode": "tt1037705",
- *                              "pictureUrl": "link"
  *                              }   
  *                          }
  *                       }

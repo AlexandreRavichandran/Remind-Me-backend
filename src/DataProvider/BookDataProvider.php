@@ -3,6 +3,8 @@
 namespace App\DataProvider;
 
 use App\Entity\BookProvider;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
@@ -25,7 +27,12 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
 
     public function getCollection(string $resourceClass, ?string $operationName = null, array $context = [])
     {
-        $query = $context['filters']['q'];
+        try {
+            $query = $context['filters']['q'];
+        } catch (\Throwable $th) {
+            return new JsonResponse(['message' => 'You must add a query "q" on your request'], Response::HTTP_BAD_REQUEST);
+        }
+
         $response = $this->executeApiRequest($query);
         $datas = [];
         if ($response['totalItems'] !== 0) {
@@ -59,19 +66,25 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
     public function getItem(string $resourceClass, $id, ?string $operationName = null, array $context = [])
     {
         $response = $this->executeApiRequest($id, false);
-        $book = new BookProvider();
-        $book
-            ->setApiCode($response['id'])
-            ->setTitle($response['volumeInfo']['title'])
-            ->setReleasedAt($response['volumeInfo']['publishedDate'])
-            ->setAuthor(join(', ', $response['volumeInfo']['authors']))
-            ->setSynopsis($response['volumeInfo']['description']);
-        if (isset($response['volumeInfo']['imageLinks']['large'])) {
-            $book->setCoverUrl($response['volumeInfo']['imageLinks']['large']);
-        }
-        $book->setCategory(join(', ', $response['volumeInfo']['categories']));
+        if ($response !== null) {
+            $book = new BookProvider();
+            $book
+                ->setApiCode($response['id'])
+                ->setTitle($response['volumeInfo']['title'])
+                ->setReleasedAt($response['volumeInfo']['publishedDate'])
+                ->setAuthor(join(', ', $response['volumeInfo']['authors']))
+                ->setSynopsis($response['volumeInfo']['description']);
+            if (isset($response['volumeInfo']['imageLinks']['large'])) {
+                $book->setCoverUrl($response['volumeInfo']['imageLinks']['large']);
+            }
+            if (isset($response['volumeInfo']['categories'])) {
+                $book->setCategory(join(', ', $response['volumeInfo']['categories']));
+            }
 
-        return $book;
+            return $book;
+        } else {
+            return new JsonResponse(['message' => 'Book not found'], Response::HTTP_NOT_FOUND);
+        }
     }
 
 
@@ -84,7 +97,10 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
         }
 
         $response = $this->client->request('GET', SELF::API_COLLECTION_URL . $addQuery);
-
-        return $response->toArray();
+        if ($response->getStatusCode() === 503) {
+            return null;
+        } else {
+            return $response->toArray();
+        }
     }
 }
