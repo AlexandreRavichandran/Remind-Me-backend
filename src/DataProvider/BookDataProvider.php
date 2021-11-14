@@ -27,13 +27,17 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
 
     public function getCollection(string $resourceClass, ?string $operationName = null, array $context = [])
     {
+        //Check if a query exists
         try {
             $query = $context['filters']['q'];
         } catch (\Throwable $th) {
             return new JsonResponse(['message' => 'You must add a query "q" on your request'], Response::HTTP_BAD_REQUEST);
         }
 
+
         $response = $this->executeApiRequest($query);
+
+        //Create as many book object as needed following the response
         $datas = [];
         if ($response['totalItems'] !== 0) {
             foreach ($response['items'] as $bookData) {
@@ -51,7 +55,7 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
                 if (isset($bookData['volumeInfo']['description'])) {
                     $book->setSynopsis($bookData['volumeInfo']['description']);
                 } else {
-                    $book->setAuthor('indisponible');
+                    $book->setSynopsis('indisponible');
                 }
                 if (isset($bookData['volumeInfo']['imageLinks']['thumbnail'])) {
                     $book->setCoverUrl($bookData['volumeInfo']['imageLinks']['thumbnail']);
@@ -88,6 +92,14 @@ class BookDataProvider implements ContextAwareCollectionDataProviderInterface, R
     }
 
 
+    /**
+     * Executes the request to Google Book's API
+     *
+     * @param string $query the query to research, might be an APi code or a simple query
+     * @param boolean $collection True if a group of books are searched, false if you search only one book
+     * 
+     * @return array|null
+     */
     private function executeApiRequest(string $query, bool $collection = true)
     {
         if ($collection) {

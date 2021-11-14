@@ -41,11 +41,19 @@ class ListMovieHandler implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * Before adding a movie on the user's list, an api request is being made to take data about the current movie being added
+     *
+     * @param ViewEvent $event
+     * 
+     * @return void
+     */
     public function movieChecker(ViewEvent $event)
     {
         $datas = $event->getControllerResult();
         if ($datas instanceof UserMovieList && $event->getRequest()->isMethod('POST')) {
 
+            //Check if request datas are correct
             $movie = $datas->getMovie();
             if (!$movie) {
                 $event->setResponse(new JsonResponse(['message' => 'There is a issue on your request. Please refer to the Api\'s documentation'], 422));
@@ -57,6 +65,7 @@ class ListMovieHandler implements EventSubscriberInterface
                 $event->setResponse(new JsonResponse(['message' => 'You have to specify the movie\'s api code', 400]));
                 return $event;
             }
+
             //If the movie is not already on the database, add it  
             $movieAlreadyInDB = $this->movieRepository->findByApiCode($apiCode);
             if (!$movieAlreadyInDB) {
@@ -86,6 +95,13 @@ class ListMovieHandler implements EventSubscriberInterface
         }
     }
 
+    /**
+     * If a movie is removed from a list, the list order of the current user are rewritten
+     *
+     * @param ViewEvent $event
+     * 
+     * @return void
+     */
     public function resetListOrder(ViewEvent $event)
     {
         $datas = $event->getRequest()->attributes->get('data');

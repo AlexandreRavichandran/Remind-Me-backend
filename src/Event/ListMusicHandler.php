@@ -40,11 +40,19 @@ class ListMusicHandler implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * Before adding a music on the user's list, an api request is being made to take data about the current music being added
+     *
+     * @param ViewEvent $event
+     * 
+     * @return void
+     */
     public function MusicChecker(ViewEvent $event)
     {
         $datas = $event->getControllerResult();
         if ($datas instanceof UserMusicList && $event->getRequest()->isMethod('POST')) {
 
+            //Check if request datas are correct
             $music = $datas->getMusic();
             if (!$music) {
                 $event->setResponse(new JsonResponse(['message' => 'There is a issue on your request. Please refer to the Api\'s documentation'], 422));
@@ -79,6 +87,7 @@ class ListMusicHandler implements EventSubscriberInterface
             }
 
             $datas->setMusic($music);
+
             //check if user has already the music on his list
             $musicAlreadyInList = $this->userMusicListRepository->searchByUserAndMusic($user, $music);
             if ($musicAlreadyInList) {
@@ -95,6 +104,13 @@ class ListMusicHandler implements EventSubscriberInterface
         }
     }
 
+    /**
+     * If a music is removed from a list, the list order of the current user are rewritten
+     *
+     * @param ViewEvent $event
+     * 
+     * @return void
+     */
     public function resetListOrder(ViewEvent $event)
     {
         $datas = $event->getRequest()->attributes->get('data');

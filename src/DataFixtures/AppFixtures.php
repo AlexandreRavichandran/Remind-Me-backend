@@ -28,14 +28,25 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
+        //Creating users
+        for ($i = 0; $i < 5; $i++) {
 
+            $user = new User();
+            $user
+                ->setPseudonym($faker->firstName . '.' . $faker->lastName)
+                ->setEmail($faker->email)
+                ->setPassword($this->passwordEncoder->hashPassword($user, 'demo'));
+
+
+        //?Uncomment lines below if you want to add fake movies, fake books, fake musics and add them randomly to users
+                
         // $musicTypes = ['Album', 'Song', 'Artist'];
 
         // $movies = [];
         // $musics = [];
         // $books = [];
 
-        // //Creating movies
+        // Creating movies
         // for ($i = 0; $i < 10; $i++) {
 
         //     $movie = new Movie();
@@ -49,7 +60,7 @@ class AppFixtures extends Fixture
         //     $manager->persist($movie);
         // }
 
-        // //Creating musics
+        // Creating musics
         // for ($i = 0; $i < 10; $i++) {
 
         //     $music = new Music();
@@ -67,7 +78,7 @@ class AppFixtures extends Fixture
         //     $manager->persist($music);
         // }
 
-        // //Creating books
+        // Creating books
         // for ($i = 0; $i < 10; $i++) {
 
         //     $book = new Book();
@@ -82,16 +93,7 @@ class AppFixtures extends Fixture
         //     $manager->persist($book);
         // }
 
-        //Creating users
-        for ($i = 0; $i < 5; $i++) {
-
-            $user = new User();
-            $user
-                ->setPseudonym($faker->firstName . '.' . $faker->lastName)
-                ->setEmail($faker->email)
-                ->setPassword($this->passwordEncoder->hashPassword($user, 'demo'));
-
-            // //Creating UserMovieLists
+            //Creating UserMovieLists
             // for ($j = 1; $j < mt_rand(2, 6); $j++) {
 
             //     $userMovieList = new UserMovieList();
@@ -102,7 +104,8 @@ class AppFixtures extends Fixture
             //     $user->addMovieList($userMovieList);
             // }
 
-            // //Creating UserMusicLists
+            //Creating UserMusicLists
+
             // for ($j = 1; $j < mt_rand(2, 6); $j++) {
 
             //     $userMusicList = new UserMusicList();
@@ -113,7 +116,8 @@ class AppFixtures extends Fixture
             //     $user->addMusicList($userMusicList);
             // }
 
-            // //Creating UserBookLists
+            //Creating UserBookLists
+
             // for ($j = 1; $j < mt_rand(2, 6); $j++) {
 
             //     $userBookList = new UserBookList();
@@ -123,6 +127,7 @@ class AppFixtures extends Fixture
             //     $manager->persist($userBookList);
             //     $user->addBookList($userBookList);
             // }
+
             $manager->persist($user);
         }
 

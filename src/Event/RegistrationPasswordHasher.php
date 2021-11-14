@@ -24,6 +24,12 @@ class RegistrationPasswordHasher implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * Hash the sent password before registrate the user
+     *
+     * @param ViewEvent $event
+     * @return void
+     */
     public function hashPassword(ViewEvent $event)
     {
         $registratedUser = $event->getControllerResult();

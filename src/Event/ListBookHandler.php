@@ -42,11 +42,19 @@ class ListBookHandler implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * Before adding a book on the user's list, an api request is being made to take data about the current book being added
+     *
+     * @param ViewEvent $event
+     * 
+     * @return void
+     */
     public function bookChecker(ViewEvent $event)
     {
         $datas = $event->getControllerResult();
         if ($datas instanceof UserBookList && $event->getRequest()->isMethod('POST')) {
 
+            //Check if request datas are correct
             $book = $datas->getBook();
             if (!$book) {
                 $event->setResponse(new JsonResponse(['message' => 'There is a issue on your request. Please refer to the Api\'s documentation'], 422));
@@ -57,6 +65,7 @@ class ListBookHandler implements EventSubscriberInterface
                 $event->setResponse(new JsonResponse(['message' => 'You have to specify a apiCode'], 400));
                 return $event;
             }
+
             $user = $this->security->getUser();
 
             //If the book is not already on the database, add it  
@@ -88,6 +97,13 @@ class ListBookHandler implements EventSubscriberInterface
         }
     }
 
+    /**
+     * If a book is removed from a list, the list order of the current user are rewritten
+     *
+     * @param ViewEvent $event
+     * 
+     * @return void
+     */
     public function resetListOrder(ViewEvent $event)
     {
         $datas = $event->getRequest()->attributes->get('data');

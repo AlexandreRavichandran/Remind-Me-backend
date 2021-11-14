@@ -104,20 +104,26 @@ class UserMovieList
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
      * @Groups({"list_movie_browse"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"list_movie_browse","list_movie_read","list_movie_update","list_movie_add_response","list_movie_update_response"})
+     * 
+     * @Groups({"list_movie_browse", "list_movie_read", "list_movie_update", "list_movie_add_response", "list_movie_update_response"})
+     * 
+     * @Assert\NotBlank(message="You have to set the list order of the movie")
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Movie::class, inversedBy="userMovieLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response","list_movie_update_response"})
+     * 
+     * @Groups({"list_movie_browse", "list_movie_read", "user_browse", "user_read", "list_movie_add", "list_movie_add_response", "list_movie_update_response"})
+     * 
      * @Assert\NotBlank(message="You must add movie datas")
      * @Assert\Valid
      */
@@ -126,7 +132,8 @@ class UserMovieList
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="movieList")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank(message="User obligatoire")
+     * 
+     * @Assert\NotBlank(message="You have to set a user")
      */
     private $user;
 

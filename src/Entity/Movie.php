@@ -19,13 +19,15 @@ class Movie
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
      * @Groups({"list_movie_add_response"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response","list_movie_update_response"})
+     * 
+     * @Groups({"list_movie_browse", "list_movie_read", "user_browse", "user_read", "list_movie_add", "list_movie_add_response", "list_movie_update_response"})
      * 
      * @Assert\NotBlank(message="The movie's title can't be blank.")
      */
@@ -33,7 +35,7 @@ class Movie
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"list_movie_browse","list_movie_read","list_movie_add","list_movie_add_response","list_movie_update_response"})
+     * @Groups({"list_movie_browse", "list_movie_read", "list_movie_add", "list_movie_add_response", "list_movie_update_response"})
      * 
      * @Assert\NotBlank(message="The movie must have a released date.")
      * @Assert\Regex(
@@ -50,15 +52,19 @@ class Movie
 
     /**
      * @ORM\Column(type="string")
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response","list_movie_update_response"})
+     * 
+     * @Groups({"list_movie_browse", "list_movie_read", "user_browse", "user_read", "list_movie_add", "list_movie_add_response", "list_movie_update_response"})
+     * 
      * @Assert\NotBlank(message="The movie must have an API Code.")
      */
     private $apiCode;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"list_movie_browse","list_movie_read","user_browse","user_read","list_movie_add","list_movie_add_response","list_movie_update_response"})
-     * @Assert\NotBlank(message="The music must have a picture url.")
+     * 
+     * @Groups({"list_movie_browse", "list_movie_read", "user_browse", "user_read", "list_movie_add", "list_movie_add_response", "list_movie_update_response"})
+     *
+     * @Assert\NotBlank(message="The movie must have a picture url.")
      */
     private $pictureUrl;
 
