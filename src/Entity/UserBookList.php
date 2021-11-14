@@ -44,22 +44,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                                  "book": {
  *                                      "type":"object",
  *                                      "properties": {
- *                                      "title": {"type": "string"},
- *                                      "author": {"type": "string"},
- *                                      "releasedAt": {"type": "string"},
  *                                      "apiCode": {"type": "string"},
- *                                      "pictureUrl": {"type":"string"}
  *                                      }
  *                                   },
  *                              }
  *                          },
  *                          "example": {
  *                              "book": {
- *                              "title": "The Alchemist",
- *                              "author": "Paulo Coelho",
- *                              "releasedAt": "2006",
  *                              "apiCode": "FzVjBgAAQBAJ",
- *                              "pictureUrl": "link"
  *                              }   
  *                          }
  *                       }

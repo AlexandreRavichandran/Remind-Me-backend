@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Service\DataGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ListBookHandler implements EventSubscriberInterface
@@ -20,13 +21,15 @@ class ListBookHandler implements EventSubscriberInterface
     private $userBookListRepository;
     private $em;
     private $security;
+    private $dataGenerator;
 
-    public function __construct(EntityManagerInterface $em, BookRepository $bookRepository, Security $security, UserBookListRepository $userBookListRepository)
+    public function __construct(EntityManagerInterface $em, BookRepository $bookRepository, Security $security, UserBookListRepository $userBookListRepository, DataGenerator $dataGenerator)
     {
         $this->bookRepository = $bookRepository;
         $this->userBookListRepository = $userBookListRepository;
         $this->em = $em;
         $this->security = $security;
+        $this->dataGenerator = $dataGenerator;
     }
     public static function getSubscribedEvents()
     {
@@ -45,15 +48,30 @@ class ListBookHandler implements EventSubscriberInterface
         if ($datas instanceof UserBookList && $event->getRequest()->isMethod('POST')) {
 
             $book = $datas->getBook();
+            if (!$book) {
+                $event->setResponse(new JsonResponse(['message' => 'There is a issue on your request. Please refer to the Api\'s documentation'], 422));
+                return $event;
+            }
+            $apiCode = $book->getApiCode();
+            if (!$apiCode) {
+                $event->setResponse(new JsonResponse(['message' => 'You have to specify a apiCode'], 400));
+                return $event;
+            }
             $user = $this->security->getUser();
 
             //If the book is not already on the database, add it  
-            $bookAlreadyInDB = $this->bookRepository->findByApiCode($book->getApiCode());
+            $bookAlreadyInDB = $this->bookRepository->findByApiCode($apiCode);
             if (!$bookAlreadyInDB) {
+                $book = $this->dataGenerator->generateBook($apiCode);
+                if (!$book) {
+                    $event->setResponse(new JsonResponse(['message' => 'Book not found. Please check the api code.'], 404));
+                    return $event;
+                }
                 $this->em->persist($book);
             } else {
-                $datas->setBook($bookAlreadyInDB);
+                $book = $bookAlreadyInDB;
             }
+            $datas->setBook($book);
 
             //check if user has already the movie on his list
             $bookAlreadyInList = $this->userBookListRepository->searchByUserAndBook($user, $book);

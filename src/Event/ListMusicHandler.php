@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Service\DataGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -19,13 +20,15 @@ class ListMusicHandler implements EventSubscriberInterface
     private $userMusicListRepository;
     private $em;
     private $security;
+    private $dataGenerator;
 
-    public function __construct(MusicRepository $musicRepository, UserMusicListRepository $userMusicListRepository, EntityManagerInterface $em, Security $security)
+    public function __construct(MusicRepository $musicRepository, UserMusicListRepository $userMusicListRepository, EntityManagerInterface $em, Security $security, DataGenerator $dataGenerator)
     {
         $this->musicRepository = $musicRepository;
         $this->userMusicListRepository = $userMusicListRepository;
         $this->em = $em;
         $this->security = $security;
+        $this->dataGenerator = $dataGenerator;
     }
     public static function getSubscribedEvents()
     {
@@ -43,20 +46,44 @@ class ListMusicHandler implements EventSubscriberInterface
         if ($datas instanceof UserMusicList && $event->getRequest()->isMethod('POST')) {
 
             $music = $datas->getMusic();
+            if (!$music) {
+                $event->setResponse(new JsonResponse(['message' => 'There is a issue on your request. Please refer to the Api\'s documentation'], 422));
+                return $event;
+            }
+            $apiCode = $music->getApiCode();
+            if (!$apiCode) {
+                $event->setResponse(new JsonResponse(['message' => 'You have to specify a apiCode'], 400));
+                return $event;
+            }
+            $type = $datas->getMusic()->getType();
+            if (!$type) {
+                $event->setResponse(new JsonResponse(
+                    ['message' => 'you have to clarify the type of the document (Album or Song)'],
+                    400
+                ));
+                return $event;
+            }
             $user = $this->security->getUser();
 
             //If the music is not already on the database, add it  
-            $musicAlreadyInDB = $this->musicRepository->findByApiCode($music->getApiCode());
+            $musicAlreadyInDB = $this->musicRepository->findByApiCode($apiCode);
             if (!$musicAlreadyInDB) {
+                $music = $this->dataGenerator->generateMusic($type, $apiCode);
+                if (!$music) {
+                    $event->setResponse(new JsonResponse(['message' => 'Music not found. Please verify the api code.'], 404));
+                    return $event;
+                }
                 $this->em->persist($music);
             } else {
-                $datas->setMusic($musicAlreadyInDB);
+                $music = $musicAlreadyInDB;
             }
 
+            $datas->setMusic($music);
             //check if user has already the music on his list
             $musicAlreadyInList = $this->userMusicListRepository->searchByUserAndMusic($user, $music);
             if ($musicAlreadyInList) {
-                $event->setResponse(new JsonResponse(['message' => 'Vous avez déja cette musique dans votre liste'], 400));
+                $event->setResponse(new JsonResponse(['message' => 'You have already this music in your list'], 400));
+                return $event;
             }
 
             //set the list order for the music currently added

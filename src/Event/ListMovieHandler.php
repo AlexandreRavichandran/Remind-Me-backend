@@ -11,6 +11,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Service\DataGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ListMovieHandler implements EventSubscriberInterface
@@ -19,13 +20,15 @@ class ListMovieHandler implements EventSubscriberInterface
     private $userMovieListRepository;
     private $em;
     private $security;
+    private $dataGenerator;
 
-    public function __construct(MovieRepository $movieRepository, UserMovieListRepository $userMovieListRepository, EntityManagerInterface $em, Security $security)
+    public function __construct(MovieRepository $movieRepository, UserMovieListRepository $userMovieListRepository, EntityManagerInterface $em, Security $security, DataGenerator $dataGenerator)
     {
         $this->movieRepository = $movieRepository;
         $this->userMovieListRepository = $userMovieListRepository;
         $this->em = $em;
         $this->security = $security;
+        $this->dataGenerator = $dataGenerator;
     }
 
     public static function getSubscribedEvents()
@@ -36,7 +39,7 @@ class ListMovieHandler implements EventSubscriberInterface
                 ['resetListOrder', EventPriorities::POST_WRITE]
             ]
         ];
-    } 
+    }
 
     public function movieChecker(ViewEvent $event)
     {
@@ -44,15 +47,29 @@ class ListMovieHandler implements EventSubscriberInterface
         if ($datas instanceof UserMovieList && $event->getRequest()->isMethod('POST')) {
 
             $movie = $datas->getMovie();
+            if (!$movie) {
+                $event->setResponse(new JsonResponse(['message' => 'There is a issue on your request. Please refer to the Api\'s documentation'], 422));
+                return $event;
+            }
             $user = $this->security->getUser();
-
+            $apiCode = $movie->getApiCode();
+            if (!$apiCode) {
+                $event->setResponse(new JsonResponse(['message' => 'You have to specify the movie\'s api code', 400]));
+                return $event;
+            }
             //If the movie is not already on the database, add it  
-            $bookAlreadyInDB = $this->movieRepository->findByApiCode($movie->getApiCode());
-            if (!$bookAlreadyInDB) {
+            $movieAlreadyInDB = $this->movieRepository->findByApiCode($apiCode);
+            if (!$movieAlreadyInDB) {
+                $movie = $this->dataGenerator->generateMovie($apiCode);
+                if (!$movie) {
+                    $event->setResponse(new JsonResponse(['message' => 'Movie not found. Please verify the api code.'], 404));
+                    return $event;
+                }
                 $this->em->persist($movie);
             } else {
-                $datas->setMovie($bookAlreadyInDB);
+                $movie = $movieAlreadyInDB;
             }
+            $datas->setMovie($movie);
 
             //check if user has already the movie on his list
             $movieAlreadyInList = $this->userMovieListRepository->searchByUserAndMovie($user, $movie);
@@ -83,5 +100,5 @@ class ListMovieHandler implements EventSubscriberInterface
             }
             $this->em->flush();
         }
-    } 
+    }
 }
