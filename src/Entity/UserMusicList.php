@@ -120,6 +120,7 @@ class UserMusicList
      * @Groups({"list_music_browse", "list_music_read", "list_music_update", "list_music_add_response", "list_music_update_response"})
      
      * @Assert\NotBlank(message="You have to set the list order of the music")
+     * @Assert\Range(min=1)
      */
     private $listOrder;
 

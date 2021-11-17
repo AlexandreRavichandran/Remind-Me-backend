@@ -115,6 +115,7 @@ class UserBookList
      * @Groups({"list_book_browse", "list_book_read", "list_book_update", "list_book_add_response", "list_book_update_response"})
      * 
      * @Assert\NotBlank(message="You have to set the list order of the book")
+     * @Assert\Range(min=1)
      */
     private $listOrder;
 

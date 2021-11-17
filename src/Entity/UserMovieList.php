@@ -115,6 +115,7 @@ class UserMovieList
      * @Groups({"list_movie_browse", "list_movie_read", "list_movie_update", "list_movie_add_response", "list_movie_update_response"})
      * 
      * @Assert\NotBlank(message="You have to set the list order of the movie")
+     * @Assert\Range(min=1)
      */
     private $listOrder;
 

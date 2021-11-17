@@ -68,9 +68,13 @@ class DataGenerator
         $music
             ->setTitle($response['title'])
             ->setType($type)
-            ->setArtist($response['artist']['name'])
-            ->setPictureUrl($response['cover_xl'])
-            ->setReleasedAt($response['release_date'])
+            ->setArtist($response['artist']['name']);
+        if ($type === 'Song') {
+            $music->setPictureUrl($response['album']['cover_xl']);
+        } else {
+            $music->setPictureUrl($response['cover_xl']);
+        }
+        $music->setReleasedAt($response['release_date'])
             ->setApiCode($apiCode);
         return $music;
     }
