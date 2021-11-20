@@ -238,6 +238,7 @@
         "files": [
             "./public/.htaccess"
         ]
+    },
     "sebastian/cli-parser": {
         "version": "1.0.1"
     },
