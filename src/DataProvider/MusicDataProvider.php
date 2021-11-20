@@ -31,6 +31,7 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
 
     public function getCollection(string $resourceClass, ?string $operationName = null, array $context = [])
     {
+        //Check if a query exists
         try {
             $query = $context['filters']['q'];
         } catch (\Throwable $th) {
@@ -40,15 +41,15 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
         switch ($resourceClass) {
             case 'App\Entity\MusicAlbumProvider':
                 $addEntity = 'album:';
-                $response = $this->handleAlbumRequest($query, $addEntity);
+                $response = $this->handleAlbumRequest($query);
                 break;
             case 'App\Entity\MusicArtistProvider':
                 $addEntity = 'artist:';
-                $response = $this->handleArtistRequest($query, $addEntity);
+                $response = $this->handleArtistRequest($query);
                 break;
             case 'App\Entity\MusicSongProvider':
                 $addEntity = 'track:';
-                $response = $this->handleSongRequest($query, $addEntity);
+                $response = $this->handleSongRequest($query);
                 break;
         }
 
@@ -127,6 +128,15 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
         return $music;
     }
 
+    /**
+     * Executes the request to deezer API
+     * 
+     * @param string $query the query to research, might be an APi code or a simple query
+     * @param string $entity the type of element to search. 3 possible values : 'album:', 'artist:', 'track:' 
+     * @param boolean $isCollection True if a group of books are searched, false if you search only one book
+     * 
+     * @return array
+     */
     private function executeApiRequest(string $query, string $entity = null, $isCollection = true)
     {
         if ($isCollection) {
@@ -138,9 +148,16 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
         return $response->toArray();
     }
 
-    private function handleArtistRequest(string $query, string $entity)
+    /**
+     * Create a artist object following the request
+     *
+     * @param string $query The query of the artist
+     * 
+     * @return array $datas Response of the query
+     */
+    private function handleArtistRequest(string $query): array
     {
-        $response = $this->executeApiRequest($query, $entity);
+        $response = $this->executeApiRequest($query, 'artist:');
         $datas = [];
         $exists = false;
         if ($response['total'] > 0) {
@@ -150,6 +167,12 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
                     ->setApiCode($artistData['artist']['id'])
                     ->setName($artistData['artist']['name'])
                     ->setPictureUrl($artistData['artist']['picture_xl']);
+
+                /**
+                 * Verification to check if an artist is already on the result array.
+                 * Useful to prevent duplicate artists ont the response array.
+                 * If the artist is not already on the response array, add it.
+                 */
                 foreach ($datas as $data) {
                     if ($artist->getApiCode() === $data->getApiCode()) {
                         $exists = true;
@@ -164,9 +187,16 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
         return $datas;
     }
 
-    private function handleSongRequest(string $query, string $entity)
+    /**
+     * Create a song object following the request
+     *
+     * @param string $query The query of the song
+     * 
+     * @return array $datas Response of the query
+     */
+    private function handleSongRequest(string $query)
     {
-        $response = $this->executeApiRequest($query, $entity);
+        $response = $this->executeApiRequest($query, 'track:');
         $datas = [];
         $exists = false;
         if ($response['total'] > 0) {
@@ -186,9 +216,17 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
 
         return $datas;
     }
-    private function handleAlbumRequest(string $query, string $entity)
+
+    /**
+     * Create a album object following the request
+     *
+     * @param string $query The query of the album
+     * 
+     * @return array $datas Response of the query
+     */
+    private function handleAlbumRequest(string $query)
     {
-        $response = $this->executeApiRequest($query, $entity);
+        $response = $this->executeApiRequest($query, 'album:');
         $datas = [];
         $exists = false;
         if ($response['total'] > 0) {
@@ -201,6 +239,11 @@ class MusicDataProvider implements ContextAwareCollectionDataProviderInterface, 
                     ->setArtist($albumData['artist']['name'])
                     ->setPictureUrl($albumData['album']['cover_xl']);
 
+                /**
+                 * Verification to check if an album is already on the result array.
+                 * Useful to prevent duplicate albums ont the response array.
+                 * If the album is not already on the response array, add it.
+                 */
                 foreach ($datas as $data) {
                     if ($album->getApiCode() === $data->getApiCode()) {
                         $exists = true;

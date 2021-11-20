@@ -63,14 +63,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user_browse","user_read"})
+     * 
+     * @Groups({"user_browse", "user_read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user_browse","user_read","user_add","user_add_response"})
-     * @Assert\NotBlank
+     * 
+     * @Groups({"user_browse", "user_read", "user_add", "user_add_response"})
+     * 
+     * @Assert\NotBlank(message="You must have an email")
      */
     private $email;
 
@@ -82,14 +85,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * 
      * @Groups({"user_add"})
+     * 
+     * @Assert\NotBlank(message="You have to set a password")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"user_read","user_add","user_add_response"})
-     * @Assert\NotBlank(message="You should have a Pseudonym")
+     * 
+     * @Groups({"user_read", "user_add", "user_add_response"})
+     * 
+     * @Assert\NotBlank(message="You should have a pseudonym")
      */
     private $pseudonym;
 

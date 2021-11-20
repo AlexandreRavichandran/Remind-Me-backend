@@ -109,20 +109,27 @@ class UserMusicList
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
      * @Groups({"list_music_browse"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"list_music_browse","list_music_read","list_music_update","list_music_add_response","list_music_update_response"})
+     * 
+     * @Groups({"list_music_browse", "list_music_read", "list_music_update", "list_music_add_response", "list_music_update_response"})
+     
+     * @Assert\NotBlank(message="You have to set the list order of the music")
+     * @Assert\Range(min=1)
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Music::class, inversedBy="userMusicLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_music_browse","list_music_read","user_browse","user_read","list_music_add","list_music_add_response","list_music_update_response"})
+     * 
+     * @Groups({"list_music_browse", "list_music_read", "user_browse", "user_read", "list_music_add", "list_music_add_response", "list_music_update_response"})
+     * 
      * @Assert\NotBlank(message="You must add music datas")
      * @Assert\Valid
      */
@@ -131,6 +138,8 @@ class UserMusicList
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="musicList")
      * @ORM\JoinColumn(nullable=false)
+     * 
+     * @Assert\NotBlank(message="You have to set a user")
      * 
      */
     private $user;

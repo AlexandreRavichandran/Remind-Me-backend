@@ -7,6 +7,9 @@ use App\Entity\Movie;
 use App\Entity\Music;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * Generate several types of datas (Movies, Musics and Books) following his api code
+ */
 class DataGenerator
 {
     private $httpClient;
@@ -16,6 +19,13 @@ class DataGenerator
         $this->httpClient = $httpClient;
     }
 
+    /**
+     * Generate a Movie object by his api code
+     *
+     * @param string $apiCode the api code of the movie to generate
+     * 
+     * @return Movie|null
+     */
     public function generateMovie(string $apiCode)
     {
         $response = $this->httpClient->request('GET', 'http://www.omdbapi.com/?i=' . $apiCode . '&apikey=' . $_ENV['OMDB_APIKEY']);
@@ -32,6 +42,13 @@ class DataGenerator
         return $movie;
     }
 
+    /**
+     * Generate a Music object by his api code
+     *
+     * @param string $apiCode the api code of the music to generate
+     * 
+     * @return Music|null
+     */
     public function generateMusic(string $type, string $apiCode)
     {
         if (!in_array($type, ['Album', 'Song'])) {
@@ -51,13 +68,24 @@ class DataGenerator
         $music
             ->setTitle($response['title'])
             ->setType($type)
-            ->setArtist($response['artist']['name'])
-            ->setPictureUrl($response['cover_xl'])
-            ->setReleasedAt($response['release_date'])
+            ->setArtist($response['artist']['name']);
+        if ($type === 'Song') {
+            $music->setPictureUrl($response['album']['cover_xl']);
+        } else {
+            $music->setPictureUrl($response['cover_xl']);
+        }
+        $music->setReleasedAt($response['release_date'])
             ->setApiCode($apiCode);
         return $music;
     }
 
+    /**
+     * Generate a Book object by his api code
+     *
+     * @param string $apiCode the api code of the book to generate
+     * 
+     * @return Book|null
+     */
     public function generateBook(string $apiCode)
     {
         $response = $this->httpClient->request('GET', 'https://www.googleapis.com/books/v1/volumes/' . $apiCode);
@@ -72,7 +100,7 @@ class DataGenerator
             ->setReleasedAt($response['volumeInfo']['publishedDate'])
             ->setTitle($response['volumeInfo']['title'])
             ->setPictureUrl($response['volumeInfo']['imageLinks']['large']);
-            
+
         return $book;
     }
 }

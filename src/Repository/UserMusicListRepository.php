@@ -21,6 +21,13 @@ class UserMusicListRepository extends ServiceEntityRepository
         parent::__construct($registry, UserMusicList::class);
     }
 
+    /**
+     * Get the movie list of an user
+     *
+     * @param User $user the current user
+     * 
+     * @return array
+     */
     public function searchByUser(User $user): array
     {
         return $this
@@ -32,6 +39,14 @@ class UserMusicListRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Get the music list element by the user and the music
+     *
+     * @param User $user the current user
+     * @param Music $music the music to search on the user's list
+     * 
+     * @return UserMusicList|null the user music list element
+     */
     public function searchByUserAndMusic(User $user, Music $music)
     {
         return $this

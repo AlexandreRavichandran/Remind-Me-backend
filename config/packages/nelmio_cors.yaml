@@ -19,7 +19,7 @@ nelmio_cors:
             allow_methods: ['POST', 'OPTIONS']
             max_age: 3600
 
-        '^\/api\/register':
+        '^\/api\/users':
             origin_regex: true
             allow_headers: ['authorization', 'content-type','access-control-allow-origin']
             allow_methods: ['POST', 'OPTIONS']

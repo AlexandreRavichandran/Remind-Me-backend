@@ -21,6 +21,13 @@ class UserBookListRepository extends ServiceEntityRepository
         parent::__construct($registry, UserBookList::class);
     }
 
+    /**
+     * Get the book list of an user
+     *
+     * @param User $user the current user
+     * 
+     * @return array
+     */
     public function searchByUser(User $user): array
     {
         return $this
@@ -32,6 +39,14 @@ class UserBookListRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Get the book list element by the user and the book
+     *
+     * @param User $user the current user
+     * @param Book $book the book to search on the user's list
+     * 
+     * @return UserBookList|null the user book list element
+     */
     public function searchByUserAndBook(User $user, Book $book)
     {
         return $this

@@ -28,6 +28,7 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
 
     public function getCollection(string $resourceClass, ?string $operationName = null, array $context = [])
     {
+        //Check if a query exists
         try {
             $query = $context['filters']['q'];
         } catch (\Throwable $th) {
@@ -36,6 +37,8 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
 
         $response = $this->executeApiRequest($query, true);
         if ($response['Response'] === "True") {
+
+            //Create as many book object as needed following the response
             $datas = [];
             foreach ($response['Search'] as $movieData) {
                 $movie = new MovieProvider();
@@ -73,7 +76,15 @@ class MovieDataProvider implements ContextAwareCollectionDataProviderInterface, 
         }
     }
 
-    private function executeApiRequest(string $query, bool $collection = true)
+    /**
+     * Executes the request to OMDB API
+     *
+     * @param string $query the query to research, might be an APi code or a simple query
+     * @param boolean $collection True if a group of books are searched, false if you search only one book
+     * 
+     * @return array
+     */
+    private function executeApiRequest(string $query, bool $collection = true): array
     {
         if ($collection) {
             $parameter = 's=';

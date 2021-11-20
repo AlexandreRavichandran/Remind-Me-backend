@@ -104,20 +104,27 @@ class UserBookList
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
      * @Groups({"list_book_browse"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"list_book_browse","list_book_read","list_book_update","list_book_add_response","list_book_update_response"})
+     * 
+     * @Groups({"list_book_browse", "list_book_read", "list_book_update", "list_book_add_response", "list_book_update_response"})
+     * 
+     * @Assert\NotBlank(message="You have to set the list order of the book")
+     * @Assert\Range(min=1)
      */
     private $listOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="userBookLists")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list_book_browse","list_book_read","user_browse","user_read","list_book_add","list_book_add_response","list_book_update_response"})
+     * 
+     * @Groups({"list_book_browse", "list_book_read", "user_browse", "user_read", "list_book_add", "list_book_add_response", "list_book_update_response"})
+     *
      * @Assert\NotBlank(message="You must add book datas")
      * @Assert\Valid
      */
@@ -126,6 +133,8 @@ class UserBookList
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bookList")
      * @ORM\JoinColumn(nullable=false)
+     * 
+     * @Assert\NotBlank(message="You have to set a user")
      */
     private $user;
 

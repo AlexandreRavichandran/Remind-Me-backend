@@ -41,30 +41,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class BookProvider
 {
     /**
-
      * @Groups({"book_list"})
      */
     private $id;
 
     /**
-     * @param string $apiCode The code of the book to search
      * @ApiProperty(identifier=true)
      */
     public $apiCode;
 
-
     private $title;
-
 
     private $author;
 
-
     private $category;
-
 
     private $releasedAt;
 
     private $coverUrl;
+
     private $synopsis;
 
 
@@ -211,7 +206,7 @@ class BookProvider
 
     /**
      * Get the value of synopsis
-     */ 
+     */
     public function getSynopsis()
     {
         return $this->synopsis;
@@ -221,7 +216,7 @@ class BookProvider
      * Set the value of synopsis
      *
      * @return  self
-     */ 
+     */
     public function setSynopsis($synopsis)
     {
         $this->synopsis = $synopsis;
