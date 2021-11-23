@@ -65,7 +65,7 @@ class RegistrationPasswordHasher implements EventSubscriberInterface
     {
 
         $responseCode = $event->getResponse()->getStatusCode();
-        if ($responseCode === 201) {
+        if ($responseCode === 201 && str_contains($event->getResponse()->getContent(), '"@context":"\/contexts\/User"')) {
             $response = json_decode($event->getResponse()->getContent());
             $user = $this->userRepository->findOneByEmail($response->email);
             $token = $this->jwtManager->create($user);
